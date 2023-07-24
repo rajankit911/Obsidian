@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "NGINX Directives.md",
+                "file": "Load Balancer.md",
                 "mode": "source",
                 "source": false
               }
@@ -118,7 +118,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "NGINX Directives.md",
+                "file": "Load Balancer.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -135,7 +135,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "NGINX Directives.md",
+                "file": "Load Balancer.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -158,7 +158,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "NGINX Directives.md"
+                "file": "Load Balancer.md"
               }
             }
           }
@@ -181,16 +181,16 @@
   },
   "active": "04f7b815d958cb1d",
   "lastOpenFiles": [
-    "How NGINX processes a request.md",
-    "NGINX Directives.md",
-    "NGINX as API Gateway.md",
+    "API Gateway.md",
+    "Load Balancer.md",
     "Introduction.md",
+    "NGINX Directives.md",
+    "NGINX Threading Architecture.md",
+    "How NGINX processes a request.md",
     "Threading and Connections.md",
     "NGINX Directives/listen.md",
     "NGINX Directives/server_name.md",
     "NGINX Directives",
-    "Serving Static Content.md",
-    "NGINX Threading Architecture.md",
     "Event Driven Architecture.md",
     "Difference.md",
     "Snippet.md",

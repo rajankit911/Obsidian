@@ -13,10 +13,19 @@ Directive --> Block
 	- [[NGINX Directives#`server_name`|server_name]]
 
 - **Block Directive:**
-	A block directive has the same structure as a simple directive, but instead of the semicolon it ends with a set of additional instructions surrounded by braces (`{` and `}`). If a block directive can have other directives inside braces, it is called a context (examples: [events](https://nginx.org/en/docs/ngx_core_module.html#events), [http](https://nginx.org/en/docs/http/ngx_http_core_module.html#http), [server](https://nginx.org/en/docs/http/ngx_http_core_module.html#server), and [location](https://nginx.org/en/docs/http/ngx_http_core_module.html#location)).
+	A block directive has the same structure as a simple directive, but instead of the semicolon it ends with a set of additional instructions surrounded by braces (`{` and `}`).
+	- [[NGINX Directives#`location`|location]]
+	A block directive can have other directives inside braces, it is called a context.
 	- [[NGINX Directives#`server`|server]]
 
+
 Directives placed in the configuration file outside of any contexts are considered to be in the [main](https://nginx.org/en/docs/ngx_core_module.html) context. The `events` and `http` directives reside in the `main` context, `server` in `http`, and `location` in `server`.
+
+# Module: ngx_http_core_module
+
+## `server`
+
+Server block sets configuration for a virtual server. There is no clear separation between IP-based (based on the IP address) and name-based (based on the ***Host*** request header field) virtual servers. Instead, the [[NGINX Directives#`listen`|listen]] directives describe all addresses and ports that should accept connections for the server, and the [[NGINX Directives#`server_name`|server_name]] directive lists all server names.
 
 ## `listen`
 
@@ -51,7 +60,7 @@ listen unix:/var/run/nginx.sock;
 >- If `listen` directive is not present then either `*:80` is used if nginx runs with the superuser privileges, or `*:8000` otherwise.
 
 
-### `default_server`
+### `- default_server`
 
 The `default_server` parameter will cause the `server` block to become the default `server` block for the specified `address:port` pair. It will be used when NGINX cannot determined a specific `server` block out of multiple matching `server` blocks for a given request.
 
@@ -125,7 +134,7 @@ server {
 ```
 
 
-### Server Name Hash Tables
+### - Server Name Hash Tables
 
 Exact names, wildcard names starting with an asterisk, and wildcard names ending with an asterisk are stored in three hash tables bound to the listen ports.
 
@@ -141,10 +150,63 @@ For these reasons, it is better to use exact names where possible.
 >If a server is the only server for a listen port, then NGINX will not build the hash tables for the listen port to test server names at all.
 
 
+## `location`
 
-## `server`
+| Context | Syntax |
+| --------- | --------- |
+| server, location | **location** [ \= \| \~ \| \~\* \| \^\~ ] `uri` { ... }
+||**location** **\@name** { ... }|
 
-Server block sets configuration for a virtual server. There is no clear separation between IP-based (based on the IP address) and name-based (based on the ***Host*** request header field) virtual servers. Instead, the `listen` directives describe all addresses and ports that should accept connections for the server, and the `server_name` directive lists all server names.
+Sets configuration depending on a request URI.
+
+A location can either be defined by:
+- **An Exact Match:**  `location = uri { ... }`
+	If an exact match is found, the search terminates. For example, if a “`/`” request happens frequently, defining “`location = /`” will speed up the processing of these requests, as search terminates right after the first comparison.
+
+- **A Prefix String:** `location [^~] uri { ... }`
+	If the longest matching prefix location has the “`^~`” modifier then regular expressions are not checked.
+
+- **A Regular Expression:** `location  ~ | ~* uri { ... }` 
+	Regular expressions are specified with:
+	- the “`~`” modifier (for case-sensitive matching)
+	- the preceding “`~*`” modifier (for case-insensitive matching)
+
+>[!note]
+>`location` blocks can be nested, with some exceptions like a named location which is defined by `@`
+
+### - How NGINX finds a location matching a given request
+
+NGINX first checks locations defined using the prefix strings (prefix locations). Among them, the location with the longest matching prefix is selected and remembered. Then regular expressions are checked, in the order of their appearance in the configuration file. The search of regular expressions terminates on the first match, and the corresponding configuration is used. If no match with a regular expression is found then the configuration of the prefix location remembered earlier is used.
+
+Let’s illustrate the above by an example:
+
+```conf
+location = / {
+    [ configuration A ]
+}
+
+location / {
+    [ configuration B ]
+}
+
+location /documents/ {
+    [ configuration C ]
+}
+
+location ^~ /images/ {
+    [ configuration D ]
+}
+
+location ~* \.(gif|jpg|jpeg)$ {
+    [ configuration E ]
+}
+```
+
+* The “`/`” request will match configuration A
+*  The “`/index.html`” request will match configuration B
+*  The “`/documents/document.html`” request will match configuration C
+*  The “`/images/1.gif`” request will match configuration D
+*  The “`/documents/1.jpg`” request will match configuration E
 
 ## Serving Static Content
 
@@ -188,3 +250,25 @@ http {
 	}
 }
 ```
+
+
+# Module: ngx_http_rewrite_module
+
+## `rewrite`
+
+| Context | Syntax |
+| --------- | --------- |
+| server, location, if | **rewrite** `regex` `replacement` [_flag_]; |
+
+If the specified regular expression matches a request URI, URI is changed as specified in the `replacement` string.
+
+An optional `flag` parameter can be one of:
+- `last`:
+	Stops processing the current set of `ngx_http_rewrite_module` directives and starts a search for a new location matching the changed URI
+- `break`: 
+	Stops processing the current set of `ngx_http_rewrite_module` directives as with the break directive
+- `redirect`:
+	Returns a temporary redirect with the ==302== code; used if a replacement string does not start with “`http://`”, “`https://`”, or “`$scheme`”
+- `permanent`:
+	Returns a permanent redirect with the ==301== code
+

@@ -1,3 +1,18 @@
+API gateways can be used for both monolithic and microservices-based apps. API gateways perform several functions, including:
+- **Request routing**:
+	Routing requests to appropriate backends
+- **Authentication**:
+	Authenticating the requesters making API calls (**AuthN**) and verifying that the requester is authorized to make the request (**AuthZ**)
+- **Rate Limiting**:
+	Applying rate limits to prevent overloading of the systems and mitigate DDoS attacks
+- **SSL/TLS Termination**:
+	Offloading SSL/TLS traffic to improve performance
+- **Exception handling**:
+	Handling errors and exceptions
+
+
+
+
 To use NGINX as an API gateway, you can follow these steps:
 
 1. Install NGINX: Start by installing NGINX on your server or machine. NGINX provides official installation instructions for different platforms on their website.
