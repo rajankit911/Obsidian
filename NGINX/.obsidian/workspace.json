@@ -181,10 +181,10 @@
   },
   "active": "04f7b815d958cb1d",
   "lastOpenFiles": [
-    "API Gateway.md",
-    "Load Balancer.md",
-    "Introduction.md",
     "NGINX Directives.md",
+    "Load Balancer.md",
+    "API Gateway.md",
+    "Introduction.md",
     "NGINX Threading Architecture.md",
     "How NGINX processes a request.md",
     "Threading and Connections.md",
