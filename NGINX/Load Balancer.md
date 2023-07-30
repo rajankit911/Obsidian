@@ -1,5 +1,33 @@
 NGINX as a very efficient HTTP load balancer is used to distribute traffic to several application servers and to improve performance, scalability and reliability of web applications with NGINX.
 
+### Proxying HTTP Traffic to a Group of Servers
+
+First you need to define the group of servers with the `upstream` directive which is placed in the `http` context.
+
+Servers in the group are configured using the `server` directive (not to be confused with the `server` block that defines a virtual server running on NGINX).
+
+To pass requests to a server group, the name of the group is specified in the `proxy_pass` directive (or the `fastcgi_pass`, `memcached_pass`, `scgi_pass`, or `uwsgi_pass` directives for those protocols.)
+
+In the below example, a virtual server running on NGINX passes all requests to the **backend** upstream group:
+
+```nginx
+http {
+    upstream backend {
+        server backend1.example.com;
+        server backend2.example.com;
+        server 192.0.0.1 backup;
+    }
+    
+    server {
+        location / {
+            proxy_pass http://backend;
+        }
+    }
+}
+```
+
+
+
 ### Load balancing methods
 
 The following load balancing mechanisms (or methods) are supported in NGINX:
@@ -15,9 +43,12 @@ The following load balancing mechanisms (or methods) are supported in NGINX:
 
 ### Default load balancing configuration (round-robin)
 
-```conf
+Requests are distributed evenly across the servers.
+
+```nginx
 http {
     upstream myapp1 {
+		# no load balancing method is specified for Round Robin
         server srv1.example.com;
         server srv2.example.com;
         server srv3.example.com;
@@ -46,11 +77,11 @@ Reverse proxy implementation in NGINX includes load balancing for HTTP, HTTPS, F
 
 ### Least connected load balancing
 
+With the least-connected load balancing, NGINX will try not to overload a busy application server with excessive requests, distributing the new requests to the server with least number of active connections.
+
 Least-connected allows controlling the load on application instances more fairly in a situation when some of the requests take longer to complete.
 
-With the least-connected load balancing, nginx will try not to overload a busy application server with excessive requests, distributing the new requests to a less busy server instead.
-
-```conf
+```nginx
 upstream myapp1 {
 	least_conn;
 	server srv1.example.com;
@@ -64,13 +95,15 @@ upstream myapp1 {
 >With round-robin or least-connected load balancing, each subsequent client’s request can be potentially distributed to a different server. There is no guarantee that the same client will be always directed to the same server.
 
 
-### Session persistence (ip-hash)
+### Session persistence 
 
-With ip-hash, the client’s IP address is used as a hashing key to determine what server in a server group should be selected for the client’s requests. This method ensures that the requests from the same client will always be directed to the same server except when this server is unavailable.
+#### ip-hash
+
+With ip-hash, the client’s IP address is used as a hashing key to determine what server in a server group should be selected for the client’s requests. In this case, either the first three octets of the IPv4 address or the whole IPv6 address are used to calculate the hash value. This method ensures that the requests from the same client will always be directed to the same server except when this server is unavailable.
 
 This way ip-hash load balancing make the client’s session “**sticky**” or “**persistent**” in terms of always tying a client to a particular application server.
 
-```conf
+```nginx
 upstream myapp1 {
     ip_hash;
     server srv1.example.com;
@@ -79,13 +112,36 @@ upstream myapp1 {
 }
 ```
 
+If one of the servers needs to be temporarily removed from the load‑balancing rotation, it can be marked with the `down` parameter in order to preserve the current hashing of client IP addresses. Requests that were to be processed by this server are automatically sent to the next server in the group:
 
-### Weighted load balancing
+```nginx
+upstream backend {
+	ip_hash;
+    server backend1.example.com;
+    server backend2.example.com;
+    server backend3.example.com down;
+}
+```
 
-It is possible to use server weights with NGINX load balancing algorithms.
-When the `weight` parameter is specified for a server, the `weight` is accounted as part of the load balancing decision.
+#### hash
 
-```conf
+The server to which a request is sent is determined from a user‑defined key which can be a text string, variable, or a combination. For example, the key may be a paired source IP address and port, or a URI as in this example:
+
+```nginx
+upstream backend {
+    hash $request_uri consistent;
+    server backend1.example.com;
+    server backend2.example.com;
+}
+```
+
+If the `consistent` parameter is specified, the `ketama` consistent hashing method will be used instead. If an upstream server is added to or removed from an upstream group, only a few keys are remapped to different servers which minimizes cache misses. This helps to achieve a higher cache hit ratio for caching servers.
+
+### Weighted load balancing (Server Weights)
+
+By default, NGINX distributes requests among the servers in the group according to their weights using the Round Robin method. When the `weight` parameter is specified for a server, the `weight` is accounted as part of the load balancing decision; its default value is 1.
+
+```nginx
 upstream myapp1 {
 	server srv1.example.com weight=3;
 	server srv2.example.com;
