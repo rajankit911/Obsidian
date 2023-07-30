@@ -1,0 +1,102 @@
+{
+  "main": {
+    "id": "b19d9f5549efd67f",
+    "type": "split",
+    "children": [
+      {
+        "id": "179076d1d20d72a0",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "4. BeanPostProcessor.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "93fca74590b2a860",
+    "type": "split",
+    "children": [
+      {
+        "id": "f5a48d12f31b8e59",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "63203b1a15a497de",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "b247721108587327",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#spring-ioc",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 221
+  },
+  "right": {
+    "id": "ba26603a9f4d0a55",
+    "type": "split",
+    "children": [
+      {
+        "id": "1309b15916f4cab1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "37a96754080102e7",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "4. BeanPostProcessor.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "179076d1d20d72a0",
+  "lastOpenFiles": [
+    "4. BeanPostProcessor.md",
+    "5. BeanFactoryPostProcessor.md",
+    "3. Spring Bean Life Cycle.md",
+    "subtopics/ApplicationContext.md",
+    "subtopics/BeanFactory.md",
+    "subtopics/Loose Coupling.md",
+    "subtopics/Configuration Metadata.md",
+    "1. Introduction.md",
+    "2. Spring IoC.md",
+    "xml-tags/context-component-scan.md"
+  ]
+}

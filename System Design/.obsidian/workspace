@@ -1,0 +1,102 @@
+{
+  "main": {
+    "id": "17b5978858fc0e2d",
+    "type": "split",
+    "children": [
+      {
+        "id": "51283a7d8912202e",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Cache.md",
+            "mode": "preview"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d4f4e7117e2b26a2",
+    "type": "split",
+    "children": [
+      {
+        "id": "436299354755bf7c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "74eb87d17dd5af2e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "3b35b1d9a678f550",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 260.0036334991455
+  },
+  "right": {
+    "id": "a62755c8974a58d3",
+    "type": "split",
+    "children": [
+      {
+        "id": "e680a2cbdf908c58",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5fa39c6cf97daa69",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Cache.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 100,
+    "collapsed": true
+  },
+  "active": "51283a7d8912202e",
+  "lastOpenFiles": [
+    "Cache.md",
+    "Distributed Cache.md",
+    "Load Balancer.md",
+    "images/cache-write-back.png",
+    "images/cache-write-back-with-write-allocation.png",
+    "images/cache-write-around.png",
+    "images/cache-write-through-1.png",
+    "images/cache-write-back-1.png",
+    "images/cache-write-through.png",
+    "Pasted image 20210606161207.png"
+  ]
+}
