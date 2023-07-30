@@ -1,68 +1,3 @@
-NGINX uses a text‑based configuration file written in a particular format. By default the file is named **nginx.conf** and can be located in one of:
-
-```bash
-/etc/nginx/
-/usr/local/etc/nginx
-/usr/local/nginx/conf
-```
-
-
-## Feature-Specific Configuration Files
-
-To make the configuration easier to maintain, we recommend that you split it into a set of feature‑specific files stored in the **/etc/nginx/conf.d** directory and use the `include` directive in the main **nginx.conf** file to reference the contents of the feature‑specific files.
-
-```nginx
-include conf.d/http;
-include conf.d/stream;
-include conf.d/exchange-enhanced;
-```
-
-## Contexts
-
-A few top‑level directives, referred to as _contexts_, group together the directives that apply to different traffic types:
-
-- `events` – General connection processing
-- `http` – HTTP traffic
-- `mail` – Mail traffic
-- `stream` – TCP and UDP traffic
-
-Directives placed outside of these contexts are said to be in the `main` context. The following configuration illustrates the use of contexts.
-
-```nginx
-user nobody; # a directive in the 'main' context
-
-events {
-    # configuration of connection processing
-}
-
-http {
-    # Configuration specific to HTTP and affecting all virtual servers  
-
-    server {
-        # configuration of HTTP virtual server 1       
-        location /one {
-            # configuration for processing URIs starting with '/one'
-        }
-        location /two {
-            # configuration for processing URIs starting with '/two'
-        }
-    } 
-    
-    server {
-        # configuration of HTTP virtual server 2
-    }
-}
-
-stream {
-    # Configuration specific to TCP/UDP and affecting all virtual servers
-    server {
-        # configuration of TCP virtual server 1 
-    }
-}
-```
-
-# NGINX Directives
-
 Directives are divided into two parts:
 
 ```mermaid
@@ -72,14 +7,14 @@ Directive --> Block
 ```
 - **Simple Directive:**
 	A simple directive consists of the name and parameters separated by spaces and ends with a semicolon (**;**).
-	- [[NGINX Configuration Files#`listen`|listen]]
-	- [[NGINX Configuration Files#`server_name`|server_name]]
+	- [[NGINX Configuration File#`listen`|listen]]
+	- [[NGINX Configuration File#`server_name`|server_name]]
 
 - **Block Directive:**
 	A block directive has the same structure as a simple directive, but instead of the semicolon it ends with a set of additional instructions surrounded by braces (`{` and `}`). It acts as “container” that groups together related directives.
-	- [[NGINX Configuration Files#`location`|location]]
+	- [[NGINX Configuration File#`location`|location]]
 	A block directive can have other directives inside braces, it is called a context.
-	- [[NGINX Configuration Files#`server`|server]]
+	- [[NGINX Configuration File#`server`|server]]
 
 
 Directives placed in the configuration file outside of any contexts are considered to be in the `main` context. The `events` and `http` directives reside in the `main` context, `server` in `http`, and `location` in `server`.
@@ -88,7 +23,7 @@ Directives placed in the configuration file outside of any contexts are consider
 
 ## `server`
 
-Server block sets configuration for a virtual server. There is no clear separation between IP-based (based on the IP address) and name-based (based on the ***Host*** request header field) virtual servers. Instead, the [[NGINX Configuration Files#`listen`|listen]] directives describe all addresses and ports that should accept connections for the server, and the [[NGINX Configuration Files#`server_name`|server_name]] directive lists all server names.
+Server block sets configuration for a virtual server. There is no clear separation between IP-based (based on the IP address) and name-based (based on the ***Host*** request header field) virtual servers. Instead, the [[NGINX Configuration File#`listen`|listen]] directives describe all addresses and ports that should accept connections for the server, and the [[NGINX Configuration File#`server_name`|server_name]] directive lists all server names.
 
 ## `listen`
 
@@ -335,4 +270,3 @@ An optional `flag` parameter can be one of:
 	Returns a temporary redirect with the ==302== code; used if a replacement string does not start with “`http://`”, “`https://`”, or “`$scheme`”
 - `permanent`:
 	Returns a permanent redirect with the ==301== code
-
