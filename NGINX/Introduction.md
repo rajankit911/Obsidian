@@ -42,9 +42,16 @@ NGINX does not use the thread based architecture, but an event based architectur
 ## Async-Await vs ThreadPool vs MultiThreading on High-Performance Sockets (C10k Solutions?)
 
 
+## Running NGINX in a Docker Container
+
+
+You can create an NGINX instance in a Docker container using the NGINX Open Source image from the Docker Hub.
+
 ```sh
 docker run -d -p 80:80 --name webserver nginx
 ```
+
+Verify that the container is running master and worker process
 
 ```sh
 root@d2b089304854:/# apt update && apt install -y procps
@@ -52,14 +59,44 @@ root@d2b089304854:/# ps -C nginx -f
 ```
 
 
-By default, the NGINX configuration file can be located in:
+## Master and Worker Processes
 
-```bash
-/etc/nginx/nginx.conf
+NGINX has one master process and one or more worker processes. If caching is enabled, the cache loader and cache manager processes also run at startup.
+
+The main purpose of the master process is to read and evaluate configuration files, as well as maintain the worker processes.
+
+The worker processes do the actual processing of requests. NGINX relies on OS-dependent mechanisms to efficiently distribute requests among worker processes. The number of worker processes is defined by the `worker_processes` directive in the **nginx.conf** configuration file and can either be set to a fixed number or configured to adjust automatically to the number of available CPU cores.
+
+```nginx
+user             nobody;
+error_log        logs/error.log notice;
+worker_processes number | auto ;
 ```
 
 
-/var/log/nginx/*.log
+
+
+## Controlling NGINX
+
+To reload your configuration, you can stop or restart NGINX, or send signals to the master process. A signal can be sent by running the `nginx` command (invoking the NGINX executable) with the `-s` argument.
+
+```sh
+nginx -s <SIGNAL>
+```
+
+where `<SIGNAL>` can be one of the following:
+
+- `quit` – Shut down gracefully (the `SIGQUIT` signal)
+- `reload` – Reload the configuration file (the `SIGHUP` signal)
+- `reopen` – Reopen log files (the `SIGUSR1` signal)
+- `stop` – Shut down immediately (or fast shutdown, the `SIGTERM` signal)
+
+The `kill` utility can also be used to send a signal directly to the master process. The process ID of the master process is written, by default, to the **nginx.pid** file, which is located in one of the below directories:
+```sh
+/usr/local/nginx/logs
+/var/run
+```
+
 
 ## Reload NGINX
 
