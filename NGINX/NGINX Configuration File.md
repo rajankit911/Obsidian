@@ -1,4 +1,4 @@
-NGINX uses a text‑based configuration file written in a particular format. By default the file is named **nginx.conf** and can be located in one of:
+NGINX uses a text‑based configuration file written in a particular format. By default the file is named `nginx.conf` and can be located in one of:
 
 ```bash
 /etc/nginx/
@@ -9,7 +9,7 @@ NGINX uses a text‑based configuration file written in a particular format. By 
 
 ## Feature-Specific Configuration Files
 
-To make the configuration easier to maintain, we recommend that you split it into a set of feature‑specific files stored in the **/etc/nginx/conf.d** directory and use the `include` directive in the main **nginx.conf** file to reference the contents of the feature‑specific files.
+To make the configuration easier to maintain, we recommend that you split it into a set of feature‑specific files stored in the `/etc/nginx/conf.d` directory and use the `include` directive in the main `nginx.conf` file to reference the contents of the feature‑specific files.
 
 ```nginx
 include conf.d/http;

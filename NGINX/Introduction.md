@@ -36,6 +36,12 @@ You can create an NGINX instance in a Docker container using the NGINX Open Sour
 docker run -d -p 80:80 --name webserver nginx
 ```
 
+- `docker run`: Command to create and start a new container.
+- `-d`: Detached mode, which runs the container in the background.
+- `-p 80:80`: Maps port 80 of the host to port 80 of the container, allowing you to access Nginx on the host machine at `[http://localhost](http://localhost./)`[.](http://localhost./)
+- `--name webserver`: Assigns the name `webserver` to the running container.
+- `nginx`: The name of the Docker image you want to use for the container.
+
 Verify that the container is running master and worker process
 
 ```sh

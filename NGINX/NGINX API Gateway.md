@@ -11,7 +11,7 @@ API gateways can be used for both monolithic and microservices-based apps. API g
 	Handling errors and exceptions
 
 
-
+## Implementation
 
 To use NGINX as an API gateway, you can follow these steps:
 
@@ -21,41 +21,57 @@ To use NGINX as an API gateway, you can follow these steps:
 
 3. Define upstream servers: In the NGINX configuration, you need to define the upstream servers that will handle the requests for your APIs. An upstream server represents the backend services that provide the API functionality. You can define multiple upstream servers if you have multiple APIs or backend services. Here's an example configuration:
 
-```
+```nginx
 http {
-  upstream api_servers {
-    server api1.example.com;
-    server api2.example.com;
-    server api3.example.com;
-  }
+	# Define upstream blocks for each microservice
+	upstream service1 {
+		server service1.example.com;
+	}
+
+	upstream service2 {
+		server service2.example.com;
+	}
+
+	upstream service3 {
+		server service3.example.com;
+	}
 }
 ```
 
-In this example, `api_servers` is the name of the upstream group, and it includes three servers: `api1.example.com`, `api2.example.com`, and `api3.example.com`.
 
 4. Configure proxy pass: After defining the upstream servers, you need to configure NGINX to proxy pass the requests to the backend services. Add the following configuration within the `http` block:
 
-```
+```nginx
 http {
-  ...
+	...
 
-  server {
-    listen 80;
+	server {
+	    listen 80;
+	    server_name api.example.com;
     
-    location / {
-      proxy_pass http://api_servers;
-    }
+		location /service1 {
+			# Route requests to the service1
+			proxy_pass http://service1;
+	    }
+
+		location /service2 {
+			# Route requests to the service2
+			proxy_pass http://service2;
+	    }
+
+		location /service3 {
+			# Route requests to the service3
+			proxy_pass http://service3;
+	    }
   }
 }
 ```
 
-This configuration tells NGINX to listen on port 80 and proxy pass all requests to the defined upstream servers (`api_servers`).
+In the above configuration, the `proxy_pass` line is necessary for NGINX to function as a reverse proxy and correctly forward requests to the backend server.
 
-5. Customize routing and other settings: NGINX provides various directives and settings that you can use to customize the routing behavior, load balancing, caching, security, and other aspects of your API gateway. You can refer to the NGINX documentation for more details on these options.
+5. Save and exit: Once you have made the necessary configuration changes, save the file and exit the text editor.
 
-6. Save and exit: Once you have made the necessary configuration changes, save the file and exit the text editor.
-
-7. Restart NGINX: Finally, restart NGINX to apply the changes. The command to restart NGINX varies depending on your operating system. For example, on Ubuntu, you can use the following command:
+6. Restart NGINX: Finally, restart NGINX to apply the changes. The command to restart NGINX varies depending on your operating system. For example, on Ubuntu, you can use the following command:
 
 ```
 sudo service nginx restart
