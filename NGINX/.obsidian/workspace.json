@@ -4,40 +4,28 @@
     "type": "split",
     "children": [
       {
-        "id": "fd14f9e513978758",
+        "id": "1c5e85a940ebf465",
         "type": "tabs",
         "children": [
           {
-            "id": "46ac8f0d999d5b7d",
+            "id": "81c3665e5bbd7dc1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "NGINX API Gateway.md",
+                "file": "NGINX Rewrite Rules.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "48509a43d887db19",
+            "id": "e33a7d15236e2d36",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
                 "file": "HTTP Load Balancer.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "4c507920dfeeb610",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Introduction.md",
                 "mode": "source",
                 "source": false
               }
@@ -117,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "NGINX API Gateway.md",
+                "file": "NGINX Rewrite Rules.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -134,7 +122,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "NGINX API Gateway.md",
+                "file": "NGINX Rewrite Rules.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -157,7 +145,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "NGINX API Gateway.md"
+                "file": "NGINX Rewrite Rules.md"
               }
             }
           }
@@ -178,16 +166,22 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "46ac8f0d999d5b7d",
+  "active": "81c3665e5bbd7dc1",
   "lastOpenFiles": [
-    "Introduction.md",
-    "NGINX Configuration File.md",
-    "NGINX API Gateway.md",
+    "resources/nginx-rewrite.png",
+    "NGINX Rewrite Rules.md",
+    "nginx-rewrite.png.md",
     "HTTP Load Balancer.md",
-    "How NGINX processes a request.md",
-    "The C10K Problem.md",
+    "NGINX API Gateway.md",
+    "NGINX Configuration File.md",
+    "resources",
     "NGINX Directives.md",
+    "Introduction.md",
     "NGINX Threading Architecture.md",
+    "How NGINX processes a request.md",
+    "1.1 The C10K Problem.md",
+    "1. Introduction.md",
+    "The C10K Problem.md",
     "Threading and Connections.md",
     "2023-07-30.md",
     "NGINX Directives/listen.md",
