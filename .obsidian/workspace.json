@@ -1,0 +1,172 @@
+{
+  "main": {
+    "id": "0674cea46fb1cd06",
+    "type": "split",
+    "children": [
+      {
+        "id": "db07144f3ce850fc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "86fd4157bd5277b6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Java Design Patterns/Java Design Patterns.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f944eb3d96edaa37",
+    "type": "split",
+    "children": [
+      {
+        "id": "41776c44e229b63d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "cb598e69dbe2950e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "1e1a6f4342110a33",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "cbfe8768b0ea3105",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 332.5
+  },
+  "right": {
+    "id": "de1b8a78f1f7cfcb",
+    "type": "split",
+    "children": [
+      {
+        "id": "e3b821ba5a656f71",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ee1ac30783f0b8b2",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Java Design Patterns/Java Design Patterns.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "e2f698af65409671",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Java Design Patterns/Java Design Patterns.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "762f524da3af2fbb",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "ec70a8a767d44881",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Java Design Patterns/Java Design Patterns.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "86fd4157bd5277b6",
+  "lastOpenFiles": [
+    "Java Design Patterns/Proxy Pattern.md",
+    "Java Design Patterns/implementation/Logging Framework.md",
+    "Java Design Patterns/Java Design Patterns.md",
+    "Java Design Patterns/Chain of Responsibility.md",
+    "Java Design Patterns/resources/logging-framework.svg",
+    "Java Design Patterns/resources/proxy-structure.png",
+    "Java Design Patterns/Decorator Pattern.md",
+    "Java Design Patterns/resources/chain-of-responsiblity-structure.png",
+    "Java Design Patterns/implementation",
+    "chain-of-responsibility.drawio 1.svg.md",
+    "Java Design Patterns/resources/chain-of-responsibility.drawio 1.svg",
+    "Java Design Patterns/resources",
+    "Java Design Patterns/Untitled.canvas",
+    "Docker/Introduction.md",
+    "Docker/Volumes.md",
+    "Docker/Container.md",
+    "Docker/Docker Compose.md",
+    "Docker/Image.md",
+    "NGINX/Introduction.md",
+    "Java Design Patterns"
+  ]
+}
