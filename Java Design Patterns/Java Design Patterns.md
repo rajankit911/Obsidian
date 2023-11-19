@@ -1,6 +1,6 @@
 ## 1. Creational Design Pattern
 
-1. Factory Pattern
+1. [[Factory Pattern]]
 2. Abstract Factory Pattern
 3. Singleton Pattern
 4. Prototype Pattern
@@ -26,7 +26,7 @@
 6. Memento Pattern
 7. Observer Pattern
 8. State Pattern
-9. Strategy Pattern
+9. [[Strategy Pattern]]
 10. Template Pattern
 11. Visitor Pattern
 12. Lazy Load Pattern
