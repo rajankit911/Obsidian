@@ -13,26 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Java Design Patterns/Java Design Patterns.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "afe4a78b6de335fe",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Java Design Patterns/Strategy Pattern.md",
+                "file": "System Design/URL Shortener.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -98,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Java Design Patterns/Strategy Pattern.md",
+                "file": "System Design/URL Shortener.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Java Design Patterns/Strategy Pattern.md",
+                "file": "System Design/URL Shortener.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -138,11 +125,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Java Design Patterns/Strategy Pattern.md"
+                "file": "System Design/URL Shortener.md"
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -159,16 +147,31 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "afe4a78b6de335fe",
+  "active": "86fd4157bd5277b6",
   "lastOpenFiles": [
+    "url-shortener.jpg",
+    "Java Cryptography/Message Digest.md",
+    "System Design/Job Scheduler.md",
+    "System Design/URL Shortener.md",
+    "System Design/Basic Concepts/Consistent Hashing.md",
+    "NGINX/Introduction.md",
+    "NGINX/HTTP Load Balancer.md",
+    "NGINX/How NGINX processes a request.md",
+    "System Design/Basic Concepts/Cache.md",
+    "System Design/Basic Concepts/Load Balancer 2.md",
+    "System Design/Basic Concepts/Load Balancer.md",
+    "System Design/Basic Concepts/Bloom Filter.md",
+    "System Design/Basic Concepts",
+    "System Design/Basic Concepts/Distributed Cache.md",
+    "Java Cryptography",
     "Java Design Patterns/resources/strategy-pattern-method-3.png",
     "Java Design Patterns/resources/strategy-pattern-method-2.png",
     "Java Design Patterns/resources/strategy-pattern-method-1.png",
+    "Java Design Patterns/Java Design Patterns.md",
+    "Java Design Patterns/Strategy Pattern.md",
     "Java Design Patterns/Factory Pattern.md",
     "Java Design Patterns/resources/parameterised-factory-pattern.png",
     "Java Design Patterns/resources/abstract-factory-method.png",
-    "Java Design Patterns/Java Design Patterns.md",
-    "Java Design Patterns/Strategy Pattern.md",
     "Java Design Patterns/Decorator Pattern.md",
     "Java Design Patterns/Chain of Responsibility.md",
     "Java Design Patterns/Proxy Pattern.md",
@@ -187,7 +190,6 @@
     "Docker/Container.md",
     "Docker/Docker Compose.md",
     "Docker/Image.md",
-    "NGINX/Introduction.md",
     "Java Design Patterns"
   ]
 }
