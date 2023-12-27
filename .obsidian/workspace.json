@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "System Design/URL Shortener.md",
+                "file": "System Design/Unique ID Generator.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "System Design/URL Shortener.md",
+                "file": "System Design/Unique ID Generator.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "System Design/URL Shortener.md",
+                "file": "System Design/Unique ID Generator.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "System Design/URL Shortener.md"
+                "file": "System Design/Unique ID Generator.md"
               }
             }
           }
@@ -149,20 +149,30 @@
   },
   "active": "86fd4157bd5277b6",
   "lastOpenFiles": [
-    "url-shortener.jpg",
-    "Java Cryptography/Message Digest.md",
+    "System Design/TO-DO.md",
+    "System Design/Unique ID Generator.md",
+    "System Design/Database Internals/LSM Tree.md",
+    "Spring Framework/1. Introduction.md",
+    "System Design/Basic Concepts/Consistent Hashing.md",
+    "System Design/Basic Concepts/Bloom Filter.md",
+    "System Design/Basic Concepts/Distributed Cache.md",
+    "System Design/Basic Concepts/Load Balancer.md",
+    "System Design/Basic Concepts/Cache.md",
+    "System Design/Basic Concepts/Load Balancer 2.md",
+    "System Design/Database Internals/How tables and indexes are stored on disk.md",
+    "System Design/Database Internals/Write Ahead Logging.md",
     "System Design/Job Scheduler.md",
     "System Design/URL Shortener.md",
-    "System Design/Basic Concepts/Consistent Hashing.md",
+    "System Design/images/lsm_tree.jpg",
+    "lsm_tree (1).jpg",
+    "System Design/Database Internals",
+    "System Design/Basic Concepts/Merkle Tree.md",
+    "System Design/images/url-shortener.jpg",
+    "Java Cryptography/Message Digest.md",
     "NGINX/Introduction.md",
     "NGINX/HTTP Load Balancer.md",
     "NGINX/How NGINX processes a request.md",
-    "System Design/Basic Concepts/Cache.md",
-    "System Design/Basic Concepts/Load Balancer 2.md",
-    "System Design/Basic Concepts/Load Balancer.md",
-    "System Design/Basic Concepts/Bloom Filter.md",
     "System Design/Basic Concepts",
-    "System Design/Basic Concepts/Distributed Cache.md",
     "Java Cryptography",
     "Java Design Patterns/resources/strategy-pattern-method-3.png",
     "Java Design Patterns/resources/strategy-pattern-method-2.png",
@@ -177,19 +187,9 @@
     "Java Design Patterns/Proxy Pattern.md",
     "Java Design Patterns/resources/strategy-structure.png",
     "Java Design Patterns/implementation/Logging Framework.md",
-    "Java Design Patterns/resources/logging-framework.svg",
-    "Java Design Patterns/resources/proxy-structure.png",
-    "Java Design Patterns/resources/chain-of-responsiblity-structure.png",
     "Java Design Patterns/implementation",
-    "chain-of-responsibility.drawio 1.svg.md",
-    "Java Design Patterns/resources/chain-of-responsibility.drawio 1.svg",
     "Java Design Patterns/resources",
     "Java Design Patterns/Untitled.canvas",
-    "Docker/Introduction.md",
-    "Docker/Volumes.md",
-    "Docker/Container.md",
-    "Docker/Docker Compose.md",
-    "Docker/Image.md",
     "Java Design Patterns"
   ]
 }

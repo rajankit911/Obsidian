@@ -1,0 +1,3 @@
+- [ ] Open and Closed Hashing in Java
+- [ ] Various versions of UUIDs & their collisions
+- [ ] 
