@@ -11,15 +11,26 @@
             "id": "10c8ee6ec1e39d32",
             "type": "leaf",
             "state": {
+              "type": "image",
+              "state": {
+                "file": "System Design/images/mapreduce-data-flow.png"
+              }
+            }
+          },
+          {
+            "id": "a70f015e297a038b",
+            "type": "leaf",
+            "state": {
               "type": "markdown",
               "state": {
-                "file": "System Design/Basic Concepts/Cache.md",
+                "file": "System Design/Basic Concepts/Consistent Hashing.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -85,7 +96,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "System Design/Basic Concepts/Cache.md",
+                "file": "System Design/Basic Concepts/Consistent Hashing.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +113,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "System Design/Basic Concepts/Cache.md",
+                "file": "System Design/Basic Concepts/Consistent Hashing.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +136,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "System Design/Basic Concepts/Cache.md"
+                "file": "System Design/Basic Concepts/Consistent Hashing.md"
               }
             }
           }
@@ -147,12 +158,28 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "cb598e69dbe2950e",
+  "active": "a70f015e297a038b",
   "lastOpenFiles": [
-    "System Design/images/write-around-cache.png",
-    "System Design/Database Internals/Approaches to offload database.md",
+    "System Design/Basic Concepts/Distributed Cache.md",
+    "System Design/Basic Concepts/Load Balancer.md",
+    "System Design/Basic Concepts/Load Balancer 2.md",
+    "System Design/Basic Concepts/Merkle Tree.md",
+    "System Design/Basic Concepts/MapReduce.md",
+    "System Design/Basic Concepts/Bloom Filter.md",
+    "Pasted image 20240129002846.png",
+    "Pasted image 20240129002834.png",
+    "Pasted image 20240129002824.png",
+    "Pasted image 20240129002754.png",
+    "System Design/images/mapreduce-word-count.png",
+    "System Design/images/mapreduce-phases.png",
+    "System Design/images/mapreduce-data-flow.png",
+    "Pasted image 20240218002049.png",
+    "Pasted image 20240218002117.png",
+    "Pasted image 20240218002402.png",
     "System Design/Basic Concepts/Cache.md",
-    "System Design/images/write-behind-cache.png",
+    "System Design/Database Internals/Write Ahead Logging.md",
+    "System Design/Database Internals/Approaches to offload database.md",
+    "System Design/Logging System.md",
     "System Design/URL Shortener.md",
     "Java Design Patterns/Chain of Responsibility.md",
     "Java Design Patterns/implementation/Logging Framework.md",
@@ -164,28 +191,12 @@
     "Java Design Patterns/Strategy Pattern.md",
     "Low Level Design/Vending Machine.md",
     "read.md",
-    "System Design/images/write-through-cache.png",
     "System Design/Top K Problem.md",
     "System Design/Unique ID Generator.md",
-    "System Design/Logging System.md",
     "System Design/Job Scheduler.md",
     "System Design/TO-DO.md",
-    "Pasted image 20240129002846.png",
-    "Pasted image 20240129002834.png",
-    "Pasted image 20240129002824.png",
-    "Pasted image 20240129002754.png",
     "System Design/Basic Concepts/Consistent Hashing.md",
-    "System Design/Basic Concepts/Distributed Cache.md",
     "Low Level Design",
-    "System Design/Database Internals/How tables and indexes are stored on disk.md",
-    "System Design/images/cache-aside.png",
-    "System Design/images/read-through-cache.png",
-    "System Design/images/cache-invalidation-methods.png",
-    "System Design/images/cache-write-through.png",
-    "System Design/Database Internals/LSM Tree.md",
-    "Spring Framework/1. Introduction.md",
-    "System Design/Basic Concepts/Bloom Filter.md",
-    "System Design/Basic Concepts/Load Balancer.md",
     "System Design/Database Internals",
     "System Design/Basic Concepts",
     "Java Cryptography",
