@@ -8,29 +8,14 @@
         "type": "tabs",
         "children": [
           {
-            "id": "10c8ee6ec1e39d32",
+            "id": "fd1934f006f8b7b8",
             "type": "leaf",
             "state": {
-              "type": "image",
-              "state": {
-                "file": "System Design/images/mapreduce-data-flow.png"
-              }
-            }
-          },
-          {
-            "id": "a70f015e297a038b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "System Design/Basic Concepts/Consistent Hashing.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -96,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "System Design/Basic Concepts/Consistent Hashing.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "System Design/Basic Concepts/Consistent Hashing.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -135,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "System Design/Basic Concepts/Consistent Hashing.md"
-              }
+              "state": {}
             }
           }
         ],
@@ -158,47 +139,46 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "a70f015e297a038b",
+  "active": "cb598e69dbe2950e",
   "lastOpenFiles": [
-    "System Design/Basic Concepts/Distributed Cache.md",
-    "System Design/Basic Concepts/Load Balancer.md",
-    "System Design/Basic Concepts/Load Balancer 2.md",
-    "System Design/Basic Concepts/Merkle Tree.md",
-    "System Design/Basic Concepts/MapReduce.md",
-    "System Design/Basic Concepts/Bloom Filter.md",
+    "System Design/Fundamentals/MapReduce.md",
+    "System Design/images/mapreduce-data-flow.png",
+    "Spring Framework/2. Spring IoC.md",
+    "Spring Framework/3. Spring Bean Life Cycle.md",
+    "Spring Framework/1. Introduction.md",
+    "System Design/Job Scheduler.md",
+    "System Design/URL Shortener.md",
+    "System Design/Unique ID Generator.md",
+    "System Design/Top K Problem.md",
+    "System Design/Database Internals/How tables and indexes are stored on disk.md",
+    "System Design/Database Internals/Approaches to offload database.md",
+    "System Design/Fundamentals/Bloom Filter.md",
+    "System Design/Fundamentals/Consistent Hashing.md",
+    "System Design/Fundamentals/Distributed Cache.md",
+    "System Design/Fundamentals/Load Balancer.md",
+    "System Design/Fundamentals/Load Balancer 2.md",
+    "System Design/Fundamentals/Merkle Tree.md",
     "Pasted image 20240129002846.png",
     "Pasted image 20240129002834.png",
     "Pasted image 20240129002824.png",
     "Pasted image 20240129002754.png",
     "System Design/images/mapreduce-word-count.png",
     "System Design/images/mapreduce-phases.png",
-    "System Design/images/mapreduce-data-flow.png",
     "Pasted image 20240218002049.png",
     "Pasted image 20240218002117.png",
     "Pasted image 20240218002402.png",
-    "System Design/Basic Concepts/Cache.md",
+    "System Design/Fundamentals/Cache.md",
     "System Design/Database Internals/Write Ahead Logging.md",
-    "System Design/Database Internals/Approaches to offload database.md",
     "System Design/Logging System.md",
-    "System Design/URL Shortener.md",
     "Java Design Patterns/Chain of Responsibility.md",
     "Java Design Patterns/implementation/Logging Framework.md",
     "NGINX/How NGINX processes a request.md",
     "Java Design Patterns/Decorator Pattern.md",
     "Java Design Patterns/Factory Pattern.md",
     "Java Design Patterns/Java Design Patterns.md",
-    "Java Design Patterns/Proxy Pattern.md",
-    "Java Design Patterns/Strategy Pattern.md",
-    "Low Level Design/Vending Machine.md",
-    "read.md",
-    "System Design/Top K Problem.md",
-    "System Design/Unique ID Generator.md",
-    "System Design/Job Scheduler.md",
-    "System Design/TO-DO.md",
-    "System Design/Basic Concepts/Consistent Hashing.md",
     "Low Level Design",
     "System Design/Database Internals",
-    "System Design/Basic Concepts",
+    "System Design/Fundamentals",
     "Java Cryptography",
     "Java Design Patterns/implementation",
     "Java Design Patterns/resources",
