@@ -11,8 +11,12 @@
             "id": "fd1934f006f8b7b8",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "System Design/Distributed System Concepts/Distributed Locking and Synchronization.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "System Design/Distributed System Concepts/Distributed Locking and Synchronization.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "System Design/Distributed System Concepts/Distributed Locking and Synchronization.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "System Design/Distributed System Concepts/Distributed Locking and Synchronization.md"
+              }
             }
           }
         ],
@@ -141,7 +149,11 @@
   },
   "active": "cb598e69dbe2950e",
   "lastOpenFiles": [
-    "System Design/Fundamentals/MapReduce.md",
+    "System Design/Distributed System Concepts/Distributed Cache.md",
+    "System Design/Distributed System Concepts/Distributed Locking and Synchronization.md",
+    "System Design/Distributed System Concepts/Consistent Hashing.md",
+    "System Design/Distributed System Concepts",
+    "System Design/Distributed System Concepts/MapReduce.md",
     "System Design/images/mapreduce-data-flow.png",
     "Spring Framework/2. Spring IoC.md",
     "Spring Framework/3. Spring Bean Life Cycle.md",
@@ -153,8 +165,6 @@
     "System Design/Database Internals/How tables and indexes are stored on disk.md",
     "System Design/Database Internals/Approaches to offload database.md",
     "System Design/Fundamentals/Bloom Filter.md",
-    "System Design/Fundamentals/Consistent Hashing.md",
-    "System Design/Fundamentals/Distributed Cache.md",
     "System Design/Fundamentals/Load Balancer.md",
     "System Design/Fundamentals/Load Balancer 2.md",
     "System Design/Fundamentals/Merkle Tree.md",
