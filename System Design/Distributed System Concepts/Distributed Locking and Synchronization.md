@@ -1,5 +1,7 @@
 Assume we have three node system where all three nodes are trying to access the same piece of data. Since all of them might be doing some operations on this data in parallel so there are chances that if they don't synchronize in some fashion, they might end up corrupting this data. This data could be something stored on your database or it could be any shared resource.
 
+![[distributed_locking.svg]]
+
 There's a shared resource which multiple distributed nodes are trying to access at the same time and try to modify this resource they need to coordinate in some fashion.
 
 Distributed locking is a technique using which you achieve this functionality. Without distributed locking we will see concurrency issues which will lead us to either race conditions or data inconsistencies and it might also lead into incorrect order of operations. 
@@ -32,8 +34,8 @@ There are few techniques which are typically used to implement the distributed l
 	
 	`SET my-lock-demo process_1 EX 60 NX`
 	
-	SET <key> <value> (Set key to hold the string value)
-	EX <seconds> (Set the specified expiry time, in seconds)
+	SET \<key\> \<value\> (Set key to hold the string value)
+	EX \<seconds\> (Set the specified expiry time, in seconds)
 	NX (Only set the key if it does not already exist)
 	
 	Above Redis command will return true only if you can set a key. All the nodes which are contending for the lock, will try to set a key and only one will succeed. This ensure that only one process is able to acquire the lock while other processes will see it as a failure and they will retry and once the process which was able to successfully acquire the lock is done with its processing, it will release the lock on and other processes will contend to gain the access and the process continues.
@@ -47,7 +49,7 @@ There are few techniques which are typically used to implement the distributed l
 - Consensus Algorithms (Raft and Paxos)
 	Consensus algorithms are commonly used in systems like Kafka or big distributed databases. These algorithms are tough to implement, so typically in normal applications people will not use it because there are chances that you might end up writing a lot of bugs while trying to implement these things so as an alternative to that people use systems which internally uses algorithms.
 	
-- Apache Zookeeper / etcd / consul
+- [[Zookeeper Locks#Introduction| Apache Zookeeper]] / etcd / consul
 	Systems like these which are distributed data stores but they are CP data stores which are consistent and partition tolerance so they will always ensures that all the nodes sees same copy of the data and thus and ensuring that there are no mismatch in the multiple copies of the data.
 	
 - MySQL
