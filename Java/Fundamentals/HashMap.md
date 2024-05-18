@@ -50,6 +50,10 @@ Index minimizes the size of the array.
 int index = hashcode(key) & (size - 1);
 ```
 
+In Java HashMap, the length of the table is always a power of two (`2^x`), it means that modulo operation can be simplified by a bitwise AND (`&`). Thus `n - 1` is a mask for finding the reminder as `n - 1` is always a bit pattern having 1 at each position.
+
+Read this article for more details: [Quotient and remainder dividing by 2^k](https://www.geeksforgeeks.org/quotient-remainder-dividing-2k-power-2/)
+
 In the following example, we want to insert a (Key, Value) pair in the HashMap.
 
 ```java
@@ -62,6 +66,43 @@ When we call the `put()` method, then it calculates the hash code of the Key "Am
 ```java
 Index = 2657860 & (16-1) = 4
 ```
+
+
+## Calculating Hash
+
+```java
+static final int hash(Object key) {
+	int h; return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+}
+```
+
+This is the core function in the HashMap. Hash value of key is used to calculate the index of array (table).
+
+As you can see, the shift operation `h >>> 16` is a transformation that spreads the impact of higher bits downward (bits >= positions 16th). The following table is created to better illustrate the changes of int `h`.
+
+|Operation|Binary Value|
+|---|---|
+|`h = key.hashCode()`|1111 1111 1111 1111 1111 1111 1111 1111|
+|`h >>> 16`|0000 0000 0000 0000 1111 1111 1111 1111|
+|`h ^ (h >>> 16)`|1111 1111 1111 1111 0000 0000 0000 0000|
+
+But why we need `h >>> 16`? Because shifting the bits allows the highest bits to participate into index calculations. Combined with the XOR operation `h ^ (h >>> 16)`, it is the cheapest possible way to do it. Here’s the Javadoc:
+
+>Computes key.hashCode() and spreads (XORs) higher bits of hash to lower.  Because the table uses power-of-two masking, sets of hashes that vary only in bits above the current mask will always collide. (Among known examples are sets of Float keys holding consecutive whole numbers in small tables.)  So we apply a transform that spreads the impact of higher bits downward. There is a tradeoff between speed, utility, and quality of bit-spreading. Because many common sets of hashes are already reasonably distributed (so don't benefit from spreading), and because we use trees to handle large sets of collisions in bins, we just XOR some shifted bits in the cheapest possible way to reduce systematic lossage, as well as to incorporate impact of the highest bits that would otherwise never be used in index calculations because of table bounds.
+
+For example, given `n = 32` and 4 hash codes to calculate.
+
+| h       | h (binary)                              | h % 32 | (h ^ h >>> 16) % 32 |
+| ------- | --------------------------------------- | ------ | ------------------- |
+| 65,537  | 0000 0000 0000 0001 0000 0000 0000 0001 | 1      | 0                   |
+| 131,073 | 0000 0000 0000 0010 0000 0000 0000 0001 | 1      | 3                   |
+| 262,145 | 0000 0000 0000 0100 0000 0000 0000 0001 | 1      | 5                   |
+| 524,289 | 0000 0000 0000 1000 0000 0000 0000 0001 | 1      | 1                   |
+
+When doing the modulo directly without hash code transformation, all indexes will be 1. The collision is 100%. This is because mask 31 (`n - 1`), 0000 0000 0000 0000 0000 0000 0001 1111, makes any bit higher than position 5 un-usable in number `h`.
+
+In order to use these highest bits, HashMap shifts them 16 positions left `h >>> 16` and spreads with lowest bits (`h ^ (h >>> 16)`). As a result, the modulo obtained has less collision.
+
 
 
 # Hash Collisions
