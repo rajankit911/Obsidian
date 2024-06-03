@@ -80,11 +80,11 @@ This is the core function in the HashMap. Hash value of key is used to calculate
 
 As you can see, the shift operation `h >>> 16` is a transformation that spreads the impact of higher bits downward (bits >= positions 16th). The following table is created to better illustrate the changes of int `h`.
 
-|Operation|Binary Value|
-|---|---|
-|`h = key.hashCode()`|1111 1111 1111 1111 1111 1111 1111 1111|
-|`h >>> 16`|0000 0000 0000 0000 1111 1111 1111 1111|
-|`h ^ (h >>> 16)`|1111 1111 1111 1111 0000 0000 0000 0000|
+| Operation            | Binary Value                            |
+| -------------------- | --------------------------------------- |
+| `h = key.hashCode()` | 1111 1111 1111 1111 1111 1111 1111 1111 |
+| `h >>> 16`           | 0000 0000 0000 0000 1111 1111 1111 1111 |
+| `h ^ (h >>> 16)`     | 1111 1111 1111 1111 0000 0000 0000 0000 |
 
 But why we need `h >>> 16`? Because shifting the bits allows the highest bits to participate into index calculations. Combined with the XOR operation `h ^ (h >>> 16)`, it is the cheapest possible way to do it. Here’s the Javadoc:
 
