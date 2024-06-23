@@ -21,15 +21,27 @@ The Spring IoC Container gets its instructions on what objects to instantiate, c
 
 In Spring, the objects that form the backbone of your application and that are managed by the Spring IoC _container_ are called _beans_. A bean is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container. Otherwise, a bean is simply one of many objects in your application. Beans, and the _dependencies_ among them, are reflected in the _configuration metadata_ used by a container.
 
-
-![[spring-ioc.png]]
-
-
+```mermaid
+flowchart TB
+	D((" ")) -- Configuration Metadata --> B
+	A((" "))--Your Business Objects (POJOs) --> B[("`Spring IoC Container
+		ApplicationContext`")]
+	B -- produces --> C["`Fully configured system
+					Ready for Use`"]
+```
 # Configuration Metadata
 
 Configuration metadata provides the instructions to Spring IoC container on how to initiate, configure, wire and assemble the application specific objects.
 
-![[spring-ioc-configuration-metadata.png]]
+```mermaid
+flowchart LR
+    A[Configuration Metadata] --> B[("`Spring IoC Container
+    ApplicationContext`")]
+    B --> C((Bean))
+    C --> D(Instantiating)
+    C --> E(Configuring)
+    C --> F(Assembling)
+```
 
 Configuration metadata can be provided to Spring container in following ways:
 
@@ -150,7 +162,7 @@ Spring's **DI** functionality is implemented using **BeanFactory** interface and
 
 A **BeanFactory** will load bean definitions stored in a configuration source (such as an XML document), and use the `org.springframework.beans` package to configure the beans. Depending on the bean definition, the factory will return either **an independent instance of a contained object (the Prototype design pattern)**, or **a single shared instance (the Singleton design pattern)**.
 
-One of the most popularly used implementation of **BeanFactory** is the **XMLBeanFactory**.
+One of the most popularly used implementation of **BeanFactory** is the ==**XMLBeanFactory**==.
 
 ---
 
@@ -196,31 +208,44 @@ public interface ApplicationContext
 
 **ApplicationContext** is a sub-interface of **BeanFactory**.
 
-The **BeanFactory** provides the configuration framework and basic functionality, and the **ApplicationContext** adds more enterprise-specific functionality. It provides:
-- Easier integration with Spring's AOP features
-- Message resource handling (for use in internationalization)
+_ApplicationContext_ enhances _BeanFactory_ in a more framework-oriented style and provides several features that are suitable for enterprise applications.
+
+The **BeanFactory** provides the configuration framework and basic functionality, and the **ApplicationContext** adds more enterprise-specific functionality like:
+- Easy integration with Spring's AOP features
+- Message resource handling (for use in internationalization or i18n)
 - Event publication
+- Annotation-based dependency injection
 - Application-layer specific contexts such as the **WebApplicationContext** for use in web applications
 
+_ApplicationContext_ supports almost all types of bean scopes, but the _BeanFactory_ only supports two scopes — _Singleton_ and _Prototype_.
+
 The most popularly used ApplicationContext implementations are:
-- **FileSystemXmlApplicationContext**
-- **ClassPathXmlApplicationContext**
-- **XmlWebApplicationContext**
-- **AnnotationConfigApplicationContext**
-- **AnnotationConfigWebApplicationContext**
+
+```mermaid
+flowchart LR
+	A[ApplicationContext] --> FileSystemXmlApplicationContext
+	A --> ClassPathXmlApplicationContext
+	A --> XmlWebApplicationContext
+	A --> AnnotationConfigApplicationContext
+	A --> AnnotationConfigWebApplicationContext
+```
 
 
 > [!question] **BeanFactory** or **ApplicationContext**?
 
 **ApplicationContext** is generally recommended over the **BeanFactory** because the **ApplicationContext** includes all functionality of the **BeanFactory**. Furthermore, it provides more enterprise-specific functionalities. This is why we use it as the default Spring container.
 
-Feature | BeanFactory | ApplicationContext
------------- | ------------ | ------------
-Bean instantiation/wiring | Yes | Yes
-Automatic `BeanPostProcessor` registration | No | Yes
-Automatic `BeanFactoryPostProcessor` registration | No | Yes
-Convenient `MessageSource` access (for i18n) | No | Yes
-`ApplicationEvent` publication | No | Yes
+**_BeanFactory_ loads beans on-demand, while _ApplicationContext_ loads all beans at startup**. Thus, _BeanFactory_ is lightweight as compared to _ApplicationContext_.
+
+| Feature                                           | BeanFactory                                  | ApplicationContext               |
+| ------------------------------------------------- | -------------------------------------------- | -------------------------------- |
+| Bean Instantiation                                | when `getBean()` method is called explicitly | At the time of container startup |
+| Loading Mechanism                                 | Lazy                                         | Eager                            |
+| Bean instantiation/wiring                         | Yes                                          | Yes                              |
+| Automatic `BeanPostProcessor` registration        | No                                           | Yes                              |
+| Automatic `BeanFactoryPostProcessor` registration | No                                           | Yes                              |
+| Convenient `MessageSource` access (for i18n)      | No                                           | Yes                              |
+| `ApplicationEvent` publication                    | No                                           | Yes                              |
 
 > [!note]
 > **ApplicationContext** is the default Spring IoC container.
