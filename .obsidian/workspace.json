@@ -13,8 +13,9 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Spring Framework/1. Introduction.md",
+                "file": "Java/Fundamentals/Functional Interface.md",
                 "mode": "source",
+                "backlinks": true,
                 "source": false
               }
             }
@@ -85,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Spring Framework/1. Introduction.md",
+                "file": "Java/Fundamentals/Functional Interface.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Spring Framework/1. Introduction.md",
+                "file": "Java/Fundamentals/Functional Interface.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Spring Framework/1. Introduction.md"
+                "file": "Java/Fundamentals/Functional Interface.md"
               }
             }
           }
@@ -150,53 +151,53 @@
   },
   "active": "5a39cd8b338059a8",
   "lastOpenFiles": [
-    "Spring Framework/Spring IoC.md",
+    "Java/Concurrency/ExecutorService.md",
+    "Java/Concurrency/Future.md",
+    "Java/Fundamentals/HashMap.md",
+    "Java/Fundamentals/Functional Interface.md",
+    "EPAM Anywhere.md",
     "Spring Framework/1. Introduction.md",
+    "Spring Framework/5. BeanFactoryPostProcessor.md",
+    "Spring Framework/4. BeanPostProcessor.md",
+    "Spring Framework/REST.md",
+    "Spring Framework/Spring IoC.md",
+    "Spring Framework/Spring Transaction Management.md",
+    "Java/Concurrency/Runnable vs Callable.md",
+    "Java/Concurrency/Multi-threading.md",
+    "Spring Framework/images/spring-ioc.png",
+    "Spring Framework/images/spring-ioc-configuration-metadata.png",
+    "Spring Framework/images/coupling-types.png",
+    "Java/Fundamentals/Garbage Collection.md",
+    "Pasted image 20240406212106.png",
+    "Pasted image 20240129002846.png",
+    "Pasted image 20240129002834.png",
+    "Pasted image 20240129002824.png",
+    "Pasted image 20240129002754.png",
+    "Spring Framework/subtopics/Loose Coupling.md",
+    "Java/Fundamentals/String Pool.md",
+    "Spring Framework/annotations/@ConditionalOnProperty.md",
     "Spring Framework/3. Spring Bean Life Cycle.md",
+    "Spring Framework/annotations",
+    "Microservices/2-Phase Commit.md",
+    "Microservices/Circuit Breaker Pattern.md",
+    "Microservices",
     "Spring Framework/subtopics/Configuration Metadata.md",
     "@Configuration.md",
     "Spring Framework/subtopics/ApplicationContext.md",
     "Spring Framework/subtopics/BeanFactory.md",
     "Java Design Patterns/implementation/Logging Framework.md",
     "System Design/Fundamentals/Load Balancer.md",
-    "System Design/Fundamentals/Cache.md",
-    "System Design/Fundamentals/Bloom Filter.md",
-    "System Design/Fundamentals/API Gateway.md",
-    "System Design/Distributed System Concepts/Distributed Transactions.md",
-    "System Design/Distributed System Concepts/Distributed Locking and Synchronization.md",
-    "System Design/Distributed System Concepts/Distributed Cache.md",
-    "System Design/Distributed System Concepts/Consistent Hashing.md",
-    "Java Design Patterns/Chain of Responsibility.md",
-    "Spring Framework/xml-tags/context-annotation-config.md",
-    "Docker/Inside a Container.md",
-    "Docker/Container.md",
-    "Docker/Image.md",
-    "Docker/Dockerfile.md",
-    "Docker/Introduction.md",
-    "Docker/Volumes.md",
-    "Java/Fundamentals/Garbage Collection.md",
-    "Java/Fundamentals/HashMap.md",
-    "Pasted image 20240406212106.png",
     "Java/Concurrency",
     "Java/Cryptography",
     "Java/Fundamentals",
     "Excalidraw/System Design/images/server_side_discovery_pattern.svg",
-    "Pasted image 20240129002754.png",
-    "Pasted image 20240129002824.png",
-    "Pasted image 20240129002834.png",
-    "Pasted image 20240129002846.png",
     "Pasted image 20240310175554.png",
-    "Pasted image 20240310175629.png",
-    "Excalidraw/System Design/images/zookeeper_lock.svg",
-    "Excalidraw/System Design/images/zookeeper_lock.svg",
     "Apache Zookeeper",
     "Excalidraw/System Design/images",
     "Excalidraw/System Design",
     "Excalidraw",
     "Untitled.canvas",
     "System Design/Distributed System Concepts",
-    "Low Level Design",
-    "System Design/Database Internals",
     "Java Design Patterns/Untitled.canvas"
   ]
 }
