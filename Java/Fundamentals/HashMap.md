@@ -26,8 +26,7 @@ It is a method of the Object class. It checks the equality of two objects. It co
 
 Hashing is a process of converting an object into integer form. The integer value helps in indexing and faster searches. By default the `hashCode()` returns an integer that represents the internal memory address of the object. `hashCode()` method is used to get the hash value of an object. In HashMap, `hashCode()` is used to calculate the bucket and therefore calculate the index. It’s necessary to write the `hashCode()` method properly for better performance of HashMap.
 
->[!note]
-> Hash code of null Key is 0.
+>[!note] Hash code of null Key is 0.
 
 ## Buckets
 
@@ -35,7 +34,17 @@ HashMap stores elements in so-called buckets. Bucket is used to store nodes. Ea
 
 ## Capacity and Load factor
 
-To avoid having many buckets with multiple nodes, the capacity is doubled if 75% (the load factor) of the buckets become non-empty. The default value for the load factor is 75%, and the default initial capacity is 16. Both can be set in the constructor. A relation between bucket and capacity is as follows:
+The performance of HashMap depends on two things:
+- Initial capacity
+- Load factor
+
+A load factor is the number that controls the resizing of the HashMap. If the load factor is 0.75 that means the capacity of the HashMap is doubled if the 75% of the buckets get filled. This process involves copying an array of nodes.
+
+To avoid having many buckets with multiple nodes, the capacity is doubled if 75% (the load factor) of the buckets become non-empty.
+
+>[!note] The default value for the load factor is 75%, and the default initial capacity is 16. Both can be set in the constructor
+
+A relation between bucket and capacity is as follows:
 
 ```java
 int capacity = number of buckets * load factor;
