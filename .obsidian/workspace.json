@@ -13,9 +13,21 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Java/Fundamentals/Functional Interface.md",
-                "mode": "source",
+                "file": "Java/8/Stream API.md",
+                "mode": "preview",
                 "backlinks": true,
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "205d808b2d860c36",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Java/8/Functional Interface.md",
+                "mode": "source",
                 "source": false
               }
             }
@@ -86,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Java/Fundamentals/Functional Interface.md",
+                "file": "Java/8/Stream API.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Java/Fundamentals/Functional Interface.md",
+                "file": "Java/8/Stream API.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Java/Fundamentals/Functional Interface.md"
+                "file": "Java/8/Stream API.md"
               }
             }
           }
@@ -151,42 +163,44 @@
   },
   "active": "5a39cd8b338059a8",
   "lastOpenFiles": [
-    "Java/Concurrency/ExecutorService.md",
+    "package-summary.html.md",
+    "Java/8/Stream API.md",
+    "Spring Framework/Spring Transaction Management.md",
+    "Spring Framework/Spring IoC.md",
+    "Java/8/Functional Interface.md",
     "Java/Concurrency/Future.md",
-    "Java/Fundamentals/HashMap.md",
-    "Java/Fundamentals/Functional Interface.md",
+    "Java/Concurrency/ExecutorService.md",
+    "Java/Concurrency/Runnable vs Callable.md",
+    "Java/Collection/Iterator.md",
+    "Spring Framework/REST.md",
+    "Java/8/Collector API.md",
+    "Java/1.8.md",
+    "Java/8",
+    "Java/Fundamentals/Garbage Collection.md",
+    "Low Level Design/Vending Machine.md",
+    "Java Design Patterns/Strategy Pattern.md",
+    "Java Design Patterns/Proxy Pattern.md",
+    "Java Design Patterns/Java Design Patterns.md",
+    "Java Design Patterns/Factory Pattern.md",
+    "Java Design Patterns/Decorator Pattern.md",
+    "Apache Zookeeper/Introduction.md",
+    "Java/Collection/HashMap.md",
+    "Java/Collection",
     "EPAM Anywhere.md",
     "Spring Framework/1. Introduction.md",
     "Spring Framework/5. BeanFactoryPostProcessor.md",
     "Spring Framework/4. BeanPostProcessor.md",
-    "Spring Framework/REST.md",
-    "Spring Framework/Spring IoC.md",
-    "Spring Framework/Spring Transaction Management.md",
-    "Java/Concurrency/Runnable vs Callable.md",
     "Java/Concurrency/Multi-threading.md",
     "Spring Framework/images/spring-ioc.png",
     "Spring Framework/images/spring-ioc-configuration-metadata.png",
     "Spring Framework/images/coupling-types.png",
-    "Java/Fundamentals/Garbage Collection.md",
     "Pasted image 20240406212106.png",
     "Pasted image 20240129002846.png",
     "Pasted image 20240129002834.png",
     "Pasted image 20240129002824.png",
     "Pasted image 20240129002754.png",
-    "Spring Framework/subtopics/Loose Coupling.md",
-    "Java/Fundamentals/String Pool.md",
-    "Spring Framework/annotations/@ConditionalOnProperty.md",
-    "Spring Framework/3. Spring Bean Life Cycle.md",
     "Spring Framework/annotations",
-    "Microservices/2-Phase Commit.md",
-    "Microservices/Circuit Breaker Pattern.md",
     "Microservices",
-    "Spring Framework/subtopics/Configuration Metadata.md",
-    "@Configuration.md",
-    "Spring Framework/subtopics/ApplicationContext.md",
-    "Spring Framework/subtopics/BeanFactory.md",
-    "Java Design Patterns/implementation/Logging Framework.md",
-    "System Design/Fundamentals/Load Balancer.md",
     "Java/Concurrency",
     "Java/Cryptography",
     "Java/Fundamentals",
@@ -195,9 +209,7 @@
     "Apache Zookeeper",
     "Excalidraw/System Design/images",
     "Excalidraw/System Design",
-    "Excalidraw",
     "Untitled.canvas",
-    "System Design/Distributed System Concepts",
     "Java Design Patterns/Untitled.canvas"
   ]
 }
