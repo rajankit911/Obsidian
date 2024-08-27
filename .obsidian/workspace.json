@@ -4,29 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "1a9fa5b6d2237707",
+        "id": "ac2dadebc0a14d6d",
         "type": "tabs",
         "children": [
           {
-            "id": "5a39cd8b338059a8",
+            "id": "5ac33bc6f8b13f1b",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Java/8/Stream API.md",
-                "mode": "preview",
-                "backlinks": true,
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "205d808b2d860c36",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Java/8/Functional Interface.md",
+                "file": "Java Collection Framework/Iterator.md",
                 "mode": "source",
                 "source": false
               }
@@ -61,7 +48,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": " concurrent",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -78,7 +65,8 @@
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -98,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Java/8/Stream API.md",
+                "file": "Java Collection Framework/Iterator.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Java/8/Stream API.md",
+                "file": "Java Collection Framework/Iterator.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -138,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Java/8/Stream API.md"
+                "file": "Java Collection Framework/Iterator.md"
               }
             }
           }
@@ -161,36 +149,42 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "5a39cd8b338059a8",
+  "active": "5ac33bc6f8b13f1b",
   "lastOpenFiles": [
-    "package-summary.html.md",
-    "Java/8/Stream API.md",
-    "Spring Framework/Spring Transaction Management.md",
-    "Spring Framework/Spring IoC.md",
-    "Java/8/Functional Interface.md",
-    "Java/Concurrency/Future.md",
-    "Java/Concurrency/ExecutorService.md",
-    "Java/Concurrency/Runnable vs Callable.md",
-    "Java/Collection/Iterator.md",
-    "Spring Framework/REST.md",
-    "Java/8/Collector API.md",
-    "Java/1.8.md",
-    "Java/8",
-    "Java/Fundamentals/Garbage Collection.md",
-    "Low Level Design/Vending Machine.md",
-    "Java Design Patterns/Strategy Pattern.md",
-    "Java Design Patterns/Proxy Pattern.md",
-    "Java Design Patterns/Java Design Patterns.md",
-    "Java Design Patterns/Factory Pattern.md",
-    "Java Design Patterns/Decorator Pattern.md",
-    "Apache Zookeeper/Introduction.md",
-    "Java/Collection/HashMap.md",
-    "Java/Collection",
-    "EPAM Anywhere.md",
-    "Spring Framework/1. Introduction.md",
-    "Spring Framework/5. BeanFactoryPostProcessor.md",
-    "Spring Framework/4. BeanPostProcessor.md",
-    "Java/Concurrency/Multi-threading.md",
+    "Java Fundamentals/Serialization vs Externization.md",
+    "Kafka/Introduction.md",
+    "Kafka/Offset Management.md",
+    "Java Collection Framework/HashMap.md",
+    "Kafka/Interview Questions.md",
+    "Java Concurrency/ExecutorService.md",
+    "Kafka",
+    "Microservices/API Versioning.md",
+    "Microservices/Service Mesh.md",
+    "Microservices/Testing.md",
+    "Microservices/Security.md",
+    "Microservices/Deployment.md",
+    "Microservices/Introduction.md",
+    "Microservices/Monitoring.md",
+    "Microservices/Distributed Tracing.md",
+    "Microservices/Interview Questions.md",
+    "Microservices/API Gateway.md",
+    "Microservices/Circuit Breaker Pattern.md",
+    "Microservices/Service Discovery.md",
+    "Microservices/Spring Cloud.md",
+    "Spring Framework/CORS.md",
+    "Microservices/Event Driven Architecture.md",
+    "Microservices/Distributed Transactions.md",
+    "Pasted image 20240713181415.png",
+    "NGINX/Threading and Connections.md",
+    "NGINX/NGINX API Gateway.md",
+    "NGINX/Introduction.md",
+    "Pasted image 20240713163031.png",
+    "Java 8/Functional Interface.md",
+    "Java Collection Framework",
+    "Java Concurrency",
+    "Java 8",
+    "Java Fundamentals/8",
+    "Java Fundamentals/Collection",
     "Spring Framework/images/spring-ioc.png",
     "Spring Framework/images/spring-ioc-configuration-metadata.png",
     "Spring Framework/images/coupling-types.png",
@@ -201,14 +195,8 @@
     "Pasted image 20240129002754.png",
     "Spring Framework/annotations",
     "Microservices",
-    "Java/Concurrency",
-    "Java/Cryptography",
-    "Java/Fundamentals",
-    "Excalidraw/System Design/images/server_side_discovery_pattern.svg",
-    "Pasted image 20240310175554.png",
-    "Apache Zookeeper",
-    "Excalidraw/System Design/images",
-    "Excalidraw/System Design",
+    "Java Fundamentals/Concurrency",
+    "Java Fundamentals/Cryptography",
     "Untitled.canvas",
     "Java Design Patterns/Untitled.canvas"
   ]

@@ -115,3 +115,27 @@ Race conditions typically arise due to the interleaving of thread execution, whe
 3. **Non-Atomic Operations**: Operations on shared data are not atomic, meaning they consist of multiple steps that can be interrupted by other threads.
 
 
+# Main Thread
+
+In Java, the main thread is created by the Java Virtual Machine (JVM). When a Java application starts, the JVM creates an initial thread of execution, which is called the "main thread." This main thread is responsible for executing the `main` method of the application.
+
+Here's a brief overview of the process:
+
+1. **JVM Initialization**: When you start a Java application (e.g., by running `java MyClass`), the JVM is initialized.
+    
+2. **Main Thread Creation**: As part of the initialization process, the JVM creates the main thread.
+    
+3. **Main Method Execution**: The main thread calls the `main` method of the specified class (in this case, `MyClass.main`).
+    
+
+The `main` method serves as the entry point of the Java application and is defined as:
+
+java
+
+Copy code
+
+`public static void main(String[] args)`
+
+This method is static, so it can be called by the JVM without creating an instance of the class. The main thread continues to execute until the `main` method completes, and any non-daemon threads spawned by the main thread are finished.
+
+
