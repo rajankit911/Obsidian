@@ -126,13 +126,9 @@ From the above code, if we try to call `get()` from the `Future` instance, the o
 
 # Completable Future
 
-It implements the `Future` interface but with additional completion logic provided by `CompletionStage` interface.
+`CompletableFuture` is a class introduced in Java 8 that allows us to write asynchronous, non-blocking code. It implements the `Future` and `CompletionStage` interface. It represents a future result of an asynchronous computation. It can be thought of as a container that holds the result of an asynchronous operation that is being executed in a different thread.
 
-It performs possible asynchronous computation and trigger dependant computations which could also be asynchronous.
-
-`CompletionStage` is a stage of a possibly asynchronous computation, that performs an action or computes a value when another `CompletionStage` completes. A stage completes upon termination of its computation, but this may in turn trigger other dependent stages.
-
-`CompletableFuture` is a building block and a framework for composing, combining, and executing asynchronous computation steps and handling errors.
+`CompletableFuture` is a building block and a framework which provides a number of methods for composing, combining, and executing asynchronous computation steps and handling errors.
 
 ## Using `CompletableFuture` as a Simple `Future`
 
@@ -150,4 +146,35 @@ public Future<String> calculateAsync() throws InterruptedException {
 }
 ```
 
+## Future vs CompletableFuture
+
+1. **Blocking vs non-blocking:** `Future` is a blocking API, whereas `CompletableFuture` is non-blocking. With a `Future` object, you must call the `get()` method to retrieve the result, but this method blocks until the result is available. In contrast, with a `CompletableFuture object`, you can use various non-blocking methods to retrieve the result, such as `thenApply()`, `thenAccept()`, or `join()`.
+2. **Composition:** `CompletableFuture` provides a more powerful composition API than `Future`. With `Future`, it is difficult to chain multiple asynchronous operations together or to combine the results of multiple operations. `CompletableFuture`, on the other hand, provides methods such as `thenCompose()`, `thenCombine()`, and `allOf()` that make it easy to compose multiple asynchronous operations and to handle their results in a non-blocking way.
+3. **Exception Handling:** `CompletableFuture` provides better exception handling than `Future`. With `Future`, you can only check if the computation completed successfully or not. If an exception occurs during the computation, you have to catch it explicitly. In contrast, with `CompletableFuture`, you can handle exceptions in a more declarative way using methods like `exceptionally()` and `handle()`.
+4. **Completion:** With a `Future` object, there is no way to explicitly complete the future. Once you submit a task to an executor service and get a `Future` object in return, you can only wait for the task to complete. With `CompletableFuture`, you have more control over the completion of the future. You can complete it explicitly by calling `complete()`, `completeExceptionally()`, or `cancel()` methods.
+
+In summary, CompletableFuture provides a more flexible and powerful API for working with asynchronous computations than Future. It offers non-blocking methods, composition methods, better exception handling, and explicit completion methods, which makes it easier to write robust and scalable concurrent code.
+
+## `runAsync()`
+
+- `runAsync()` is a method used to execute a task asynchronously that doesn’t produce a result.
+- By default task gets executed in the `ForkJoinPool.commonPool()`.
+- It accepts a `Runnable` functional interface and returns a `CompletableFuture<Void>`.
+- It’s suitable for fire-and-forget tasks where we want to execute code asynchronously without waiting for a result. For example, logging, sending notifications, or triggering background tasks.
+- The method doesn’t provide an explicit mechanism for handling exceptions within the asynchronous task.
+- Any exceptions thrown during the execution of the task are propagated to the calling thread when invoking the `get()` method on the `CompletableFuture`.
+- Execution of task begins immediately upon invocation, without any delay or scheduling considerations.
+- `runAsync()` method can be directly chained with methods like `thenRun()` to execute another task after the completion of its task.
+
+## `supplyAsync()`
+
+- `supplyAsync()` is a method used to execute a task asynchronously that produces a result.
+- By default task gets executed in the `ForkJoinPool.commonPool()`.
+- It accepts a `Supplier` functional interface and returns a CompletableFuture<T>, where T is the type of the result produced by the task.
+- It’s ideal for tasks that require a result for further processing. For example, fetching data from a database, making an API call, or performing a computation asynchronously.
+- It offers an exception-handling mechanism via the `exceptionally()` method.
+- We can use this function to handle the exception thrown during the execution of the asynchronous task and return a default value or perform any necessary cleanup operations.
+- `supplyAsync()` ensures efficient resource utilization by queuing tasks and scheduling their execution based on the availability of threads.
+- `supplyAsync()` method can be directly chained with methods like `thenApply()` to transform the result, `thenAccept()` to consume the result or `thenCompose()` to chain further asynchronous operations.
+- This flexibility enables us to build complex asynchronous workflows by chaining multiple tasks together.
 
