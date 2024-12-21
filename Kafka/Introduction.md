@@ -13,11 +13,11 @@
 - **Kafka supports excellent integration with other processing frameworks.** These include as _Apache Storm, Spark, NiFi, Flume_ etc. to complete the job.
 
 ```mermaid
-erDiagram
-	Clustor ||--o{ Broker : has
-	Broker ||--o{ Topic : has
-	Topic ||--o{ Partition : has
-	Partition ||--o{ Offset : has
+flowchart LR
+	C[Cluster] --> B[Broker]
+	B --> T[Topic]
+	T --> P[Partition]
+	P --> O[Offset]
 ```
 
 - **Broker:** The server (physical or virtual) that holds the queue.
@@ -81,49 +81,4 @@ If all consumers are from the same group, the Kafka model functions as a traditi
 
 When multiple consumer groups exist, the flow of the data consumption model aligns with the traditional publish-subscribe model. The messages are broadcast to all consumer groups.
 
-# Offset Management
 
-The offset of a message acts as a consumer-side cursor. By keeping track of the offset of messages, the consumer keeps track of which messages it has already consumed. The consumer advances its cursor to the next offset in the partition and continues after reading a message. The consumer is responsible for advancing and remembering the latest read offset within a partition.
-
-> The “offset” is a type of metadata in Kafka that represents the position of a message in a certain partition. Each message in a partition has its own unique offset value, which is represented by an integer.
-
-Kafka maintains two types of offsets.
-
-- **Current Offset** : The current offset is a reference to the most recent record that Kafka has already provided to a consumer. As a result of the current offset, the consumer does not receive the same record twice.
-- **Committed Offset** : The committed offset is a pointer to the last record that a consumer has successfully processed. We work with the committed offset in case of any failure in application or replaying from a certain point in event stream. When it comes to partition rebalancing, the committed offset is crucial. If there is a need for rebalancing.
-
-## Committing an offset
-
-When a consumer in a group receives messages from the partitions assigned by the coordinator, it must commit the offsets corresponding to the messages read. If a consumer crashes or shuts down, its partitions will be reassigned to another member, who will start consuming each partition from the previous committed offset. If the consumer fails before the offset is committed, then the consumer which takes over its partitions will use the reset policy.
-
-There are two ways to commit an offset:
-
-- **Auto Commit** : By default, the consumer is configured to use an automatic commit policy, which triggers a commit on a periodic interval. This feature is controlled by setting two properties:
-
-1. _enable.auto.commit_
-2. _auto.commit.interval.ms_
-
-Although auto-commit is a helpful feature, it may result in duplicate data being processed.
-
-Let’s have a look at an example.
-
-You’ve got some messages in the partition, and you’ve requested your first poll. Because you received ten messages, the consumer raises the current offset to ten. You process these ten messages and initiate a new call in four seconds. Since five seconds have not passed yet, the consumer will not commit the offset. Then again, you’ve got a new batch of records, and rebalancing has been triggered for some reason. The first ten records have already been processed, but nothing has yet been committed. Right? The rebalancing process has begun. As a result, the partition is assigned to a different consumer. Because we don’t have a committed offset, the new partition owner should begin reading from the beginning and process the first ten entries all over again.
-
-A manual commit is the solution to this particular situation. As a result, we may turn off auto-commit and manually commit the records after processing them.
-
-- **Manual Commit** : With Manual Commits, you take the control in your hands as to what offset you’ll commit and when. You can enable manual commit by setting the _enable.auto.commit_ property to _false_.
-
-There are two ways to implement manual commits :
-
-1. Commit Sync : The synchronous commit method is simple and dependable, but it is a blocking mechanism. It will pause your call while it completes a commit process, and if there are any recoverable mistakes, it will retry. Kafka Consumer API provides this as a prebuilt method. Its documentation can be found [here](https://kafka.apache.org/25/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html#commitSync--).
-2. Commit Async : The request will be sent and the process will continue if you use asynchronous commit. The disadvantage is that commitAsync does not attempt to retry. However, there is a legitimate justification for such behavior.
-
-Let’s have a look at an example.
-
-Assume you’re attempting to commit an offset as 70. It failed for whatever reason that can be fixed, and you wish to try again in a few seconds. Because this was an asynchronous request, you launched another commit without realizing your prior commit was still waiting. It’s time to commit-100 this time. Commit-100 is successful, however commit-75 is awaiting a retry. Now how would we handle this? Since you don’t want an older offset to be committed.
-
-This could cause issues. As a result, they created asynchronous commit to avoid retrying. This behavior, however, is unproblematic since you know that if one commit fails for a reason that can be recovered, the following higher level commit will succeed.
-
-This way of committing is also provided by the Kafka Consumer API and you can find out more about it [here](https://kafka.apache.org/25/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html#commitAsync--).
-
-Manual committing is also useful in case you want to replay and process records from a certain point in the past. For that to work, you actually commit an old offset over a recent one.
