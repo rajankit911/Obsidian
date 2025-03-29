@@ -9,11 +9,11 @@ A **rebalance** is triggered when:
 
 # Rebalance Notification
 
+The [[Consumer Groups#Consumer Group Coordinator|Group coordinator]] receives heartbeats (or polling for messages) from all consumers of a consumer group. If a consumer stops sending heartbeats, the coordinator will trigger a rebalance.
+
 ![[rebalance_notification.svg]]
 
-The rebalance process begins with the coordinator notifying the consumer instances that a rebalance has begun. It does this by piggybacking on the `HeartbeatResponse` or the `OffsetFetchResponse`.
-
-
+The rebalance process begins with the [[Consumer Groups#Consumer Group Coordinator|group coordinator]] notifying the consumer instances that a rebalance has begun. It does this by piggybacking on the `HeartbeatResponse` or the `OffsetFetchResponse`.
 # Traditional Rebalance: Stop-the-World
 
 Once the consumers receive the rebalance notification from the coordinator, they will revoke their current partition assignments. If they have been maintaining any state based on the events in their previously assigned partitions, they will also have to clean that up. Now they are basically like new consumers and will go through the same steps as a new consumer joining the group.
@@ -49,7 +49,7 @@ Let’s see some of the improvements that have been made to deal with these prob
 
 Using `StickyAssignor` the state cleanup process is moved to a later step, after the reassignments are complete. That way if a consumer is reassigned the same partition it retains the state and can just continue with its work without clearing or rebuilding the state.
 
->[!note] In our example, state would only need to be rebuilt for partition p2, which is assigned to the new consumer.
+>[!info] In our example, state would only need to be rebuilt for partition p2, which is assigned to the new consumer.
 
 ## Cooperative Sticky Partition Assignor
 

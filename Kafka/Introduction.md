@@ -1,3 +1,19 @@
+# Push versus pull design
+
+>The goal of any messaging system to fully utilize the consumer with the correct transfer rate. Kafka follows a traditional messaging system design in that data is pushed by the producer to the broker and pulled from the broker by the consumer.
+
+>[!warning] Limitations of push-based system
+>A push-based system must either send a request immediately or accumulate more data and then send it later without knowledge of whether the downstream consumer will be able to process it immediately.
+>
+>If tuned for low latency, this can result in sending a single message at a time only for the transfer to be buffered.
+
+A pull-based design fixes this by having the consumer pull all available messages after their current position in the log so there is optimal batching without introducing unnecessary latency.
+
+>[!todo] Advantages of pull-based system
+>An advantage of a pull-based system is that if a consumer falls behind production, they can catch up.
+>
+>Another advantage is that a pull-based system enables aggressive batching of data sent to the consumer.
+
 # Features of Kafka
 
 - **Kafka is highly scalable**. It is very easy to add large number of consumers without affecting performance or reliability. That’s because Kafka does not track which messages in the topic have been consumed by consumers. It simply keeps all messages in the topic within a configurable period. Kafka is linearly scalable for high volume of data. Adding more brokers / clusters will increase the throughput or decrease latency.

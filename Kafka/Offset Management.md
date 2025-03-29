@@ -3,25 +3,32 @@ A Kafka topic receives messages across a distributed set of partitions where the
 > The ___offset___ is a type of metadata in Kafka that represents the position of a message in a certain partition. Each message in a partition has its own unique offset value, which is represented by an integer.
 
 The offset of a message acts as a consumer-side cursor. By keeping track of the offset of messages, the consumer keeps track of which messages it has already consumed. The consumer advances its cursor to the next offset in the partition and continues after reading a message. The consumer is responsible for advancing and remembering the latest read offset within a partition.
-# Offset Types
 
-Kafka maintains two types of offsets:
-- Current offset
-- Committed offset
+>A consumer offset is used to track the progress of a consumer group. An offset is a unique identifier, an integer, which marks the last message that a consumer processed in a partition.
 
-```mermaid
-flowchart
-    A[Offset] --> B[Current Offset]
-    A --> C[Committed Offset]
-```
+# Consumer Offset Markers
 
+- Current Offset
+- Committed Offset
+- High Watermark
+- Log End Offset
+
+![[consumer_offset.svg]]
 ## Current Offset
 
 The current offset is a pointer to the last record that Kafka has already sent to a consumer in the most recent poll, so that the consumer doesn’t receive the same record twice.
 ## Committed Offset
 
 The committed offset is a pointer to the last record that a consumer has successfully processed. We work with the committed offset in case of any failure in application or replaying from a certain point in an event stream. When it comes to partition rebalancing, the committed offset is crucial.
+## High Watermark
 
+The high watermark is the offset of the last message that was successfully copied to all of the log’s replicas.
+## Log End Offset
+
+This is the offset of the last message written to the log.
+
+>[!note]
+>A consumer can only read up to the high watermark. This prevents the consumer from reading unreplicated data which could later be lost.
 # Offset Storage
 
 - Kafka stores offsets in an internal topic named `__consumer_offsets` by default.
@@ -33,21 +40,18 @@ The committed offset is a pointer to the last record that a consumer has success
     4. **Committed Offset:** The last processed message position.
     5. **Metadata:** Optional metadata, such as information about the consumer or custom application data.
 
+>[!info]
+>By storing the consumer offsets in a separate topic, Kafka enables consumers to read the last offset from the `__consumer_offsets` topic and resume processing from where they left off in case of failures or restarts.
+
 >[! note]
 >For specific use cases, applications can choose to store offsets in an external storage system, such as HBase, Kafka, HDFS, ZooKeeper, a database or a distributed cache, for greater control or integration with other systems.
 >
 
 # Committing an offset
 
-When a consumer in a group receives messages from the partitions assigned by the coordinator, it must commit the offsets corresponding to the messages processed. If a consumer crashes or shuts down, its partitions will be reassigned to another member, who will start consuming partitions from the previous committed offset. If the consumer fails before the offset is committed, then the consumer which takes over its partitions will use the reset `auto.offset.reset` policy.
+When a consumer in a group receives messages from the partitions assigned by the [[Consumer Groups#Consumer Group Coordinator|group coordinator]], it must commit the offsets corresponding to the messages processed. To do this, the consumer will issue a `CommitOffsetRequest` to the [[Consumer Groups#Consumer Group Coordinator|group coordinator]]. The [[Consumer Groups#Consumer Group Coordinator|group coordinator]] will then persist that information in its internal `__consumer_offsets` topic.
 
-`auto.offset.reset` determines where consumers start reading when they have no committed offset or when their offset is invalid. It has three possible values:
-- `earliest` - Start from the beginning of the partition
-- `latest` - Start from the newest messages (default)
-- `none` - Throw an exception if no offset is found
-
->[!note]
->Offsets in Kafka's `__consumer_offsets` topic can expire based on the `offsets.retention.minutes` setting (default 7 days). After expiration, older offset records are deleted during log compaction. When a consumer group becomes inactive for longer than this retention period and tries to resume, it will find no valid offset and will use the `auto.offset.reset` policy.
+![[commit_offset_request.svg]]
 
 There are two ways to commit an offset:
 - Auto Commit
@@ -97,6 +101,22 @@ If you use asynchronous commit method, the commit request will be sent and the p
 >Assume you’re attempting to commit an offset as 70. It failed for whatever reason that can be fixed, and you wish to try again in a few seconds. Because this was an asynchronous request, you launched another commit without realizing your prior commit was still waiting. It’s time to commit 100 this time. Commit 100 is successful, however commit 75 is awaiting a retry. Now how would we handle this? Since you don’t want an older offset to be committed.
 >
 >This could cause issues. As a result, they created asynchronous commit to avoid retrying. This behavior, however, is unproblematic since you know that if one commit fails for a reason that can be recovered, the following higher level commit will succeed.
+
+# Fetching an offset
+
+When a consumer group instance is restarted, it will send an `OffsetFetchRequest` to the [[Consumer Groups#Consumer Group Coordinator|group coordinator]] to retrieve the last committed offset for its assigned partition. Once it has the offset, it will resume the consumption from that point. If this consumer instance is starting for the very first time and there is no saved offset position for this consumer group, then the `auto.offset.reset` configuration will determine whether it begins consuming from the earliest offset or the latest.
+
+![[offset_fetch_request.svg]]
+
+If a consumer crashes or shuts down, its partitions will be reassigned to another member, who will start consuming partitions from the previous committed offset. If the consumer fails before the offset is committed, then the consumer which takes over its partitions will use the reset `auto.offset.reset` policy.
+
+`auto.offset.reset` determines where consumers start reading when they have no committed offset or when their offset is invalid. It has three possible values:
+- `earliest` - Start from the beginning of the partition
+- `latest` - Start from the newest messages (default)
+- `none` - Throw an exception if no offset is found
+
+>[!note]
+>Offsets in Kafka's `__consumer_offsets` topic can expire based on the `offsets.retention.minutes` setting (default 7 days). After expiration, older offset records are deleted during log compaction. When a consumer group becomes inactive for longer than this retention period and tries to resume, it will find no valid offset and will use the `auto.offset.reset` policy.
 
 # Offset Management Process
 
