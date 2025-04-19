@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <!-- Title -->
+  <text x="400" y="30" font-size="24" text-anchor="middle" font-weight="bold">Snowflake ID Generation Process</text>
+  
+  <!-- Main flow -->
+  <rect x="320" y="60" width="160" height="60" rx="10" fill="#e6f7ff" stroke="#1890ff" stroke-width="2"/>
+  <text x="400" y="90" font-size="14" text-anchor="middle" font-weight="bold">Worker Node</text>
+  <text x="400" y="110" font-size="12" text-anchor="middle">Worker ID: 5</text>
+  
+  <!-- Arrow -->
+  <line x1="400" y1="120" x2="400" y2="150" stroke="#333" stroke-width="2"/>
+  <polygon points="395,150 405,150 400,160" fill="#333"/>
+  
+  <!-- Timestamp box -->
+  <rect x="250" y="160" width="300" height="60" rx="10" fill="#f9f0ff" stroke="#722ed1" stroke-width="2"/>
+  <text x="400" y="190" font-size="14" text-anchor="middle" font-weight="bold">Get Current Timestamp (milliseconds)</text>
+  <text x="400" y="210" font-size="12" text-anchor="middle">1654789012345</text>
+  
+  <!-- Arrow -->
+  <line x1="400" y1="220" x2="400" y2="250" stroke="#333" stroke-width="2"/>
+  <polygon points="395,250 405,250 400,260" fill="#333"/>
+  
+  <!-- Sequence check -->
+  <rect x="250" y="260" width="300" height="60" rx="10" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="400" y="290" font-size="14" text-anchor="middle" font-weight="bold">Compare with Last Timestamp</text>
+  <text x="400" y="310" font-size="12" text-anchor="middle">Check if same millisecond</text>
+  
+  <!-- Arrow with decision -->
+  <line x1="400" y1="320" x2="400" y2="350" stroke="#333" stroke-width="2"/>
+  <polygon points="395,350 405,350 400,360" fill="#333"/>
+  
+  <!-- Decision diamond -->
+  <polygon points="400,360 450,410 400,460 350,410" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+  <text x="400" y="410" font-size="12" text-anchor="middle">Same</text>
+  <text x="400" y="425" font-size="12" text-anchor="middle">millisecond?</text>
+  
+  <!-- Yes arrow -->
+  <line x1="450" y1="410" x2="500" y2="410" stroke="#333" stroke-width="2"/>
+  <polygon points="500,405 510,410 500,415" fill="#333"/>
+  <text x="475" y="400" font-size="12" text-anchor="middle">Yes</text>
+  
+  <!-- No arrow -->
+  <line x1="400" y1="460" x2="400" y2="490" stroke="#333" stroke-width="2"/>
+  <polygon points="395,490 405,490 400,500" fill="#333"/>
+  <text x="420" y="475" font-size="12" text-anchor="middle">No</text>
+  
+  <!-- Sequence increment -->
+  <rect x="510" y="380" width="200" height="60" rx="10" fill="#fff2f0" stroke="#f5222d" stroke-width="2"/>
+  <text x="610" y="410" font-size="14" text-anchor="middle" font-weight="bold">Increment Sequence</text>
+  <text x="610" y="430" font-size="12" text-anchor="middle">sequence++</text>
+  
+  <!-- Arrow back to main flow -->
+  <path d="M 610,440 L 610,470 L 400,470" fill="none" stroke="#333" stroke-width="2"/>
+  <polygon points="400,465 390,470 400,475" fill="#333"/>
+  
+  <!-- Reset sequence -->
+  <rect x="300" y="500" width="200" height="60" rx="10" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+  <text x="400" y="530" font-size="14" text-anchor="middle" font-weight="bold">Reset Sequence</text>
+  <text x="400" y="550" font-size="12" text-anchor="middle">sequence = 0</text>
+  
+  <!-- Final arrow -->
+  <line x1="400" y1="560" x2="400" y2="590" stroke="#333" stroke-width="2"/>
+  <polygon points="395,590 405,590 400,600" fill="#333"/>
+  
+  <!-- Final ID structure -->
+  <rect x="200" y="600" width="400" height="60" rx="10" fill="#e6f7ff" stroke="#1890ff" stroke-width="2"/>
+  <text x="400" y="620" font-size="14" text-anchor="middle" font-weight="bold">Construct Snowflake ID</text>
+  <text x="400" y="640" font-size="12" text-anchor="middle">1654789012345 | 5 | 12</text>
+  <text x="400" y="655" font-size="12" text-anchor="middle">[Timestamp] | [Worker ID] | [Sequence]</text>
+  
+  <!-- Bit allocation info -->
+  <rect x="630" y="600" width="160" height="80" rx="10" fill="#f9f0ff" stroke="#722ed1" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="710" y="620" font-size="12" text-anchor="middle" font-weight="bold">Typical Bit Allocation</text>
+  <text x="710" y="640" font-size="10" text-anchor="middle">Timestamp: 41 bits</text>
+  <text x="710" y="660" font-size="10" text-anchor="middle">Worker ID: 10 bits</text>
+  <text x="710" y="680" font-size="10" text-anchor="middle">Sequence: 12 bits</text>
+  
+  <!-- Overflow handling -->
+  <rect x="20" y="380" width="200" height="60" rx="10" fill="#fff2f0" stroke="#f5222d" stroke-width="2"/>
+  <text x="120" y="395" font-size="14" text-anchor="middle" font-weight="bold">Sequence Overflow?</text>
+  <text x="120" y="415" font-size="12" text-anchor="middle">If sequence &gt; max value</text>
+  <text x="120" y="435" font-size="12" text-anchor="middle">Wait for next millisecond</text>
+  
+  <!-- Dotted line from sequence check to overflow handling -->
+  <path d="M 350,410 L 230,410" fill="none" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <polygon points="230,405 220,410 230,415" fill="#333"/>
+  <text x="290" y="400" font-size="10" text-anchor="middle">If sequence</text>
+  <text x="290" y="413" font-size="10" text-anchor="middle">overflows</text>
+</svg>

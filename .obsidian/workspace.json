@@ -13,40 +13,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "System Design/URL Shortener.md",
+                "file": "System Design/Unique ID Generator.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "URL Shortener"
+              "title": "Unique ID Generator"
             }
           },
           {
-            "id": "fc66340bfa70746e",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "Excalidraw/Kafka/images/consumer_offset.svg"
-              },
-              "icon": "lucide-image",
-              "title": "consumer_offset"
-            }
-          },
-          {
-            "id": "1d9b9d1713b8384b",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "Excalidraw/System Design/images/url_shortener.svg"
-              },
-              "icon": "lucide-image",
-              "title": "url_shortener"
-            }
-          },
-          {
-            "id": "cbfa5a0ad30801c2",
+            "id": "c4ec0650d82d156e",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -59,7 +35,8 @@
               "title": "Unique ID Generator"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -178,13 +155,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "System Design/URL Shortener.md",
+                "file": "System Design/Unique ID Generator.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of URL Shortener"
+              "title": "Outline of Unique ID Generator"
             }
           }
         ],
@@ -207,14 +184,25 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "5edaa69612c0df64",
+  "active": "c4ec0650d82d156e",
   "lastOpenFiles": [
-    "Excalidraw/Kafka/commit_offset_request.excalidraw.md",
     "System Design/URL Shortener.md",
-    "Excalidraw/System Design/images/url_shortener.svg",
-    "Excalidraw/System Design/url_shortener.excalidraw.md",
+    "Pasted image 20240406212106.png",
+    "Pasted image 20240713163031.png",
+    "Pasted image 20240713181415.png",
+    "Pasted Image 20241222201840_449.png",
+    "Pasted Image 20250420005900_816.svg",
+    "Excalidraw/Drawing 2025-04-20 00.58.44.excalidraw.md",
+    "Excalidraw/System Design/images/snowflake-id-diagram.svg",
     "System Design/Unique ID Generator.md",
+    "Excalidraw/System Design/images/multi_master_id_generation.svg",
+    "Excalidraw/System Design/multi_master_id_generation.excalidraw.md",
+    "Excalidraw/System Design/zookeeper_lock.excalidraw.md",
+    "Excalidraw/System Design/url_shortener.excalidraw.md",
+    "Excalidraw/System Design/images/url_shortener.svg",
     "Excalidraw/Kafka/images/consumer_offset.svg",
+    "System Design/images/url-shortener.jpg",
+    "Excalidraw/Kafka/commit_offset_request.excalidraw.md",
     "Excalidraw/Kafka/consumer_offset.excalidraw.md",
     "Kafka/Offset Management.md",
     "Kafka/Durability, Availability, and Ordering Guarantees.md",
@@ -226,24 +214,13 @@
     "Java Fundamentals/Cryptography/Message Digest.md",
     "Kafka/Kafka Controller Election.md",
     "Kafka/Consumer Group Protocol.md",
-    "Excalidraw/Kafka/images/offset_fetch_request.svg",
     "Excalidraw/Kafka/offset_fetch_request.excalidraw.md",
-    "Excalidraw/Kafka/images/commit_offset_request.svg",
     "Excalidraw/Kafka/find_group_coordinator.excalidraw.md",
     "Kafka/Partition Assignment Strategies.md",
     "Excalidraw/Kafka/range-partition.excalidraw.md",
-    "Excalidraw/Kafka/images/round_robin_partition.svg",
     "Excalidraw/Kafka/round_robin_partition.excalidraw.md",
     "Excalidraw/Kafka/rebalance_issue_2.excalidraw.md",
-    "Excalidraw/Kafka/images/range-partition.svg",
     "Excalidraw/Kafka/join_group.excalidraw.md",
-    "Excalidraw/Kafka/images/sync_group.svg",
-    "Excalidraw/Kafka/images/zookeeper_role_kakfa.svg",
-    "Excalidraw/Kafka/images/rebalance_notification.svg",
-    "Excalidraw/Kafka/images/rebalance_issue_2.svg",
-    "Excalidraw/Kafka/rebalance_issue_1.excalidraw.md",
-    "Excalidraw/Kafka/cooperative_sticky_assignor.excalidraw.md",
-    "Excalidraw/rebalance_issue_2.excalidraw 1.md",
     "Excalidraw/Kafka/images",
     "Excalidraw/Kafka",
     "Kafka",

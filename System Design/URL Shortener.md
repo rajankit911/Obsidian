@@ -48,7 +48,7 @@ At a high level, the system consists of the following components:
 5. **Analytics System**: Tracks URL usage stats (optional).
 
 
-![[url_shortener.svg]]
+![[Excalidraw/System Design/images/url_shortener.svg]]
 
 # REST APIs
 
