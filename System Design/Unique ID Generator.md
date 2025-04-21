@@ -15,20 +15,22 @@
 
 1. **Scalability:** System should scale horizontally to support 10x more load with minimal change.
 2. **Availability:** Should have > 99.99% uptime. ID generation should never be blocked system-wide.
-3. **Fault Tolerance:** System should tolerate machine failures, clock drift, or restarts.
-4. **Clock Synchronization Tolerance:** Should tolerate slight clock drifts or fallback safely.
+3. **Consistency:** Every ID must be unique even in distributed and concurrent environments.
+4. **Fault Tolerance:** System should tolerate machine failures, clock drift, or restarts.
+5. **Clock Synchronization Tolerance:** Should tolerate slight clock drifts or fallback safely.
 
 # Popular Approaches
 
 Multiple options can be used to generate unique IDs in distributed systems.
 - Database Auto-Increment or Sequence
-- Multi-master replication
 - UUIDs, ie, Universally unique identifier
 - Timestamp
 - Timestamp + Server ID
 - Ticket server
 - Redis/Zookeeper/etcd-based Counters
-- Twitter snowflake approach
+- Multi-master replication
+	- 
+	- Twitter snowflake approach
 
 ## Database Auto-Increment or Sequence
 
@@ -36,13 +38,7 @@ Multiple options can be used to generate unique IDs in distributed systems.
 > [!question] Why can’t we directly use IDs as 1,2,3,… i.e., the auto-increment feature in SQL to generate the IDs?
 >	Sequential IDs work well on local systems but not in distributed systems. Two different systems might assign the same ID to two different requests in distributed system environment. So, the uniqueness property will be violated here.
 
-### ✅ Pros
-
-- Super simple.
-- Guaranteed ordering.
-- Good for small-scale systems.
-
-### ❌ Cons
+### Potential Issue
 
 Auto-increment does not work in a distributed environment due to following reasons:
 - **Concurrency issues:**
@@ -54,6 +50,12 @@ Auto-increment does not work in a distributed environment due to following reaso
 - **Non-uniqueness across tables:**
     Each table has its own sequence, so an identical value may be found as the primary key of different entities.
 
+
+| ✅ Pros                       | ❌ Cons                                          |
+| ---------------------------- | ----------------------------------------------- |
+| Super simple                 | Centralized bottleneck                          |
+| Guaranteed ordering          | Poor performance under high concurrency         |
+| Good for small-scale systems | Not ideal for microservices or multiple regions |
 
 ## Multi-master replication
 
@@ -73,11 +75,14 @@ This approach uses _auto-increment_ feature of database. Instead of increasing t
 > 	1st Request at T1 from M2 gets the value 100
 > 	2nd Request at T2 from M1 gets the value 99
 
-### ❌ Cons
+| ✅ Pros                                             | ❌ Cons                                                   |
+| -------------------------------------------------- | -------------------------------------------------------- |
+| Multiple nodes generating IDs in parallel          | Without proper partitioning, IDs can overlap             |
+| No central bottleneck. Local ID generation is fast | It does not scale well when a server is added or removed |
+| If one master fails, others can still issue IDs    | IDs do not go up with time across multiple servers       |
+| Can run masters in multiple regions/data centers   | Requires machine ID uniqueness                           |
 
-- It does not scale well when a server is added or removed
-- Hard to scale with multiple data centres
-- IDs do not go up with time across multiple servers
+
 
 ## UUIDv4
 
@@ -87,21 +92,12 @@ A **UUID (v4)** is a **random 128-bit** identifier, typically represented as:
 a2b1c3d4-e5f6-7890-abcd-ef1234567890
 ```
 
-
-### ✅ Pros
-
-- Generating UUID is simple
-- No coordination between servers is needed so there will not be any sychronization issues
-- Easy to scale as each server is responsible for generating its own IDs
-- Universally unique (very high probability)
-
-### ❌ Cons
-
-- Not human readable
-- Not sequential
-- Absence of a time correlation between the ID and the time of generation
-- Bad for DB indexing (esp. v4 – causes index fragmentation).
-
+| ✅ Pros                                                                                   | ❌ Cons                                                                  |
+| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Generating UUID is simple                                                                | Not human readable                                                      |
+| No coordination between servers is needed so there will not be any sychronization issues | Not sequential                                                          |
+| Easy to scale as each server is responsible for generating its own IDs                   | Absence of a time correlation between the ID and the time of generation |
+| Universally unique (very high probability)                                               | Bad for DB indexing (esp. v4 – causes index fragmentation)              |
 
 > [!question] Why can’t we use UUID?
 >	We cannot use UUID here because UUID is random. UUID is not numeric. The property of being incremental is not followed, although the values are unique.
@@ -124,13 +120,12 @@ a2b1c3d4-e5f6-7890-abcd-ef1234567890
 
 The idea is to use a centralized _auto_increment_ feature in a single database server (Ticket Server).
 
-PROS:
-- Numeric IDs
-- Easy to implement
-- Works well for small to medium-scale applications
+| ✅ Pros                                            | ❌ Cons                  |
+| ------------------------------------------------- | ----------------------- |
+| Numeric IDs                                       | Single point of failure |
+| Easy to implement                                 |                         |
+| Works well for small to medium-scale applications |                         |
 
-CONS:
-- Single point of failure
 
 To avoid a SPOF, we can set up multiple ticket servers. However, this will introduce new challenges such as data synchronization.
 
@@ -139,17 +134,11 @@ To avoid a SPOF, we can set up multiple ticket servers. However, this will intro
 
 Use Redis/ZK/etcd to maintain a centralized counter via atomic increment (INCR, CAS, etc).
 
-### ✅ Pros
-
-- Simple.
-- Strong consistency.
-- Globally unique.
-
-### **❌ Cons:**
-
-- Network latency.
-- Doesn’t scale well under high QPS.
-- Single point of bottleneck unless sharded.
+| ✅ Pros             | ❌ Cons                                    |
+| ------------------ | ----------------------------------------- |
+| Simple             | Network latency                           |
+| Strong consistency | Doesn’t scale well under high QPS         |
+| Globally unique    | Single point of bottleneck unless sharded |
 
 ## Twitter Snowflakes Algorithm
 
@@ -159,12 +148,6 @@ Twitter's unique ID generation system called **Snowflake**. Snowflake ID is a 64
 - IDs include time. (ordered by date)
 - IDs fit 64-bit unsigned integers.
 - Only numerical values.
-
-A **64-bit Snowflake ID** might look like:
-
-```
-010110101000101000110000110001001010000000000000000000000001
-```
 
 Snowflake ID is widely used in distributed systems for generating unique IDs for various use cases, including:
 
@@ -185,16 +168,22 @@ As you can see, a Snowflake is composed of 5 main parts:
 
 - **Timestamp (41 bit):** Epoch timestamp in a millisecond (Snowflake’s default epoch is equal to Nov 04, 2010, 01:42:54 UTC)
 
-- **Data Center ID (5 bit):** There can be (2⁵) = 32 data centres.
+- **Node ID (5 bit):** There can be (2⁵) = 32 nodes.
 
-- **Machine ID (5 bit):** There can be (2⁵) = 32 machines per data centre.
+- **Worker ID (5 bit):** There can be (2⁵) = 32 workers per node.
 
 - **Sequence number(12-bit):** These bits are kept to ensure the uniqueness property to be maintained when multiple requests land on the same machine on the same data centre at the same timestamp. So, these bits are used for generating sequence numbers for IDs that are generated at the same timestamp. The sequence number is reset to zero at every millisecond. Since we have reserved 12 bits for this, we can have (2¹²) = 4096 sequence numbers which are certainly more than the IDs that are generated every millisecond by every single machine.
 
-Datacenter IDs and machine IDs are chosen at the startup time, generally fixed once the system is up running. Any changes in datacenter IDs and machine IDs require careful review since an accidental change in those values can lead to ID conflicts. Timestamp and sequence numbers are generated when the ID generator is running.
+Node IDs and Worker IDs are chosen at the startup time, generally fixed once the system is up running. Any changes in Node IDs and Worker IDs require careful review since an accidental change in those values can lead to ID conflicts. Timestamp and sequence numbers are generated when the ID generator is running.
 
->[!Note]
->**Ensure clock synchronization, consider the impact of low concurrency, and prioritize high availability for the mission-critical system**.
+A **64-bit Snowflake ID** might look like:
+
+```
+0-10110101 00010100 01100001 10001001 01000000 0-00000-00000-000000010000
+```
+
+
+![[twitter_snowflake.svg]]
 
 ### How Snowflake ID Works
 
@@ -208,13 +197,15 @@ Datacenter IDs and machine IDs are chosen at the startup time, generally fixed o
 
 5. Finally if in the same millisecond, if the sequence number also reaches its max value, the generator waits for the next millisecond and then starts generating IDs again.
 
+![[snowflake_working.svg]]
+
 ### The benefits of using Snowflake ID
 
 - **High precision:** The timestamp component of the ID provides high precision and accuracy for tracking events and transactions.
 - **Scalability:** The worker ID component allows for scaling the generator across multiple nodes, providing high availability and horizontal scaling.
 - **Uniqueness:** The combination of timestamp, worker ID, and sequence number ensures that each ID generated is unique.
 - **Performance:** The generator is designed to generate IDs quickly and efficiently, minimizing the overhead for generating IDs.
-- 
+
 ### Advantages
 
 - It is 64-bit long, it is half the size of UUIDs
