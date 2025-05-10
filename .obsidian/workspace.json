@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "System Design/Unique ID Generator.md",
+                "file": "System Design/Top K Problem.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Unique ID Generator"
+              "title": "Top K Problem"
             }
           }
         ]
@@ -140,13 +140,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "System Design/Unique ID Generator.md",
+                "file": "System Design/Top K Problem.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Unique ID Generator"
+              "title": "Outline of Top K Problem"
             }
           }
         ],
@@ -165,22 +165,23 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "obsidian-excalidraw-plugin:Create new drawing": false,
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
   "active": "c4ec0650d82d156e",
   "lastOpenFiles": [
+    "System Design/URL Shortener.md",
+    "System Design/Top K Problem.md",
+    "System Design/Unique ID Generator.md",
+    "System Design/images/cache-aside.png",
     "Excalidraw/System Design/snowflake_working.excalidraw.md",
     "Excalidraw/System Design/images/twitter_snowflake.svg",
-    "System Design/Unique ID Generator.md",
     "Excalidraw/System Design/images/snowflake_working.svg",
     "Excalidraw/Drawing 2025-04-20 00.58.44.excalidraw.md",
     "Pasted Image 20250420142718_371.svg",
     "Excalidraw/snowflake_working.svg",
     "snowflake_working.svg",
     "Excalidraw/System Design/twitter_snowflake.excalidraw.md",
-    "System Design/URL Shortener.md",
     "Pasted image 20240406212106.png",
     "Pasted image 20240713163031.png",
     "Pasted image 20240713181415.png",

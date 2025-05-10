@@ -24,13 +24,8 @@
 Multiple options can be used to generate unique IDs in distributed systems.
 - Database Auto-Increment or Sequence
 - UUIDs, ie, Universally unique identifier
-- Timestamp
-- Timestamp + Server ID
-- Ticket server
-- Redis/Zookeeper/etcd-based Counters
 - Multi-master replication
-	- 
-	- Twitter snowflake approach
+- Twitter snowflake approach
 
 ## Database Auto-Increment or Sequence
 
@@ -57,6 +52,25 @@ Auto-increment does not work in a distributed environment due to following reaso
 | Guaranteed ordering          | Poor performance under high concurrency         |
 | Good for small-scale systems | Not ideal for microservices or multiple regions |
 
+## UUIDv4
+
+A **UUID (v4)** is a **random 128-bit** identifier, typically represented as:
+
+```
+a2b1c3d4-e5f6-7890-abcd-ef1234567890
+```
+
+| ✅ Pros                                                                                   | ❌ Cons                                                                  |
+| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Generating UUID is simple                                                                | Not human readable                                                      |
+| No coordination between servers is needed so there will not be any sychronization issues | Not sequential                                                          |
+| Easy to scale as each server is responsible for generating its own IDs                   | Absence of a time correlation between the ID and the time of generation |
+| Universally unique (very high probability)                                               | Bad for DB indexing (esp. v4 – causes index fragmentation)              |
+
+> [!question] Why can’t we use UUID?
+>	We cannot use UUID here because UUID is random. UUID is not numeric. The property of being incremental is not followed, although the values are unique.
+
+
 ## Multi-master replication
 
 **Multi-Master Replication** approach for **ID generation** is a technique where **multiple nodes** (masters) are capable of **generating IDs independently**, without a single point of failure.
@@ -81,64 +95,6 @@ This approach uses _auto-increment_ feature of database. Instead of increasing t
 | No central bottleneck. Local ID generation is fast | It does not scale well when a server is added or removed |
 | If one master fails, others can still issue IDs    | IDs do not go up with time across multiple servers       |
 | Can run masters in multiple regions/data centers   | Requires machine ID uniqueness                           |
-
-
-
-## UUIDv4
-
-A **UUID (v4)** is a **random 128-bit** identifier, typically represented as:
-
-```
-a2b1c3d4-e5f6-7890-abcd-ef1234567890
-```
-
-| ✅ Pros                                                                                   | ❌ Cons                                                                  |
-| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Generating UUID is simple                                                                | Not human readable                                                      |
-| No coordination between servers is needed so there will not be any sychronization issues | Not sequential                                                          |
-| Easy to scale as each server is responsible for generating its own IDs                   | Absence of a time correlation between the ID and the time of generation |
-| Universally unique (very high probability)                                               | Bad for DB indexing (esp. v4 – causes index fragmentation)              |
-
-> [!question] Why can’t we use UUID?
->	We cannot use UUID here because UUID is random. UUID is not numeric. The property of being incremental is not followed, although the values are unique.
-
-## Timestamp
-
-> [!question] Why can’t we use Timestamp values to generate the IDs?
->	The reason is again same — the failure to assign unique ID values in distributed system environment. It may be possible that two requests land on two different systems at the same timestamp. So, if the timestamp parameter is utilized, both requests will be assigned the same ID based on epoch values (the time elapsed between the current timestamp and a pre-decided given timestamp). So, here the uniqueness property gets violated.
-
-## Timestamp + ServerID
-
-> [!question] Why can’t we use Timestamp + ServerID values to generate the IDs?
->	The question here would be how many bits are to be assigned to the Timestamp and ServerID. This situation would be tricky.
-
-## Ticket Server
-
-- Developed by Flickr, It is a dedicated database server, with a single database on it.
-- Used to generate distributed unique primary keys
-- In that database there are tables like `Tickets32` for 32-bit IDs, and `Tickets64` for 64-bit IDs.
-
-The idea is to use a centralized _auto_increment_ feature in a single database server (Ticket Server).
-
-| ✅ Pros                                            | ❌ Cons                  |
-| ------------------------------------------------- | ----------------------- |
-| Numeric IDs                                       | Single point of failure |
-| Easy to implement                                 |                         |
-| Works well for small to medium-scale applications |                         |
-
-
-To avoid a SPOF, we can set up multiple ticket servers. However, this will introduce new challenges such as data synchronization.
-
-
-## Redis/Zookeeper/etcd-based Counters
-
-Use Redis/ZK/etcd to maintain a centralized counter via atomic increment (INCR, CAS, etc).
-
-| ✅ Pros             | ❌ Cons                                    |
-| ------------------ | ----------------------------------------- |
-| Simple             | Network latency                           |
-| Strong consistency | Doesn’t scale well under high QPS         |
-| Globally unique    | Single point of bottleneck unless sharded |
 
 ## Twitter Snowflakes Algorithm
 
@@ -176,6 +132,12 @@ As you can see, a Snowflake is composed of 5 main parts:
 
 Node IDs and Worker IDs are chosen at the startup time, generally fixed once the system is up running. Any changes in Node IDs and Worker IDs require careful review since an accidental change in those values can lead to ID conflicts. Timestamp and sequence numbers are generated when the ID generator is running.
 
+> [!question] Why can’t we use Timestamp values to generate the IDs?
+>	The reason is again same — the failure to assign unique ID values in distributed system environment. It may be possible that two requests land on two different systems at the same timestamp. So, if the timestamp parameter is utilized, both requests will be assigned the same ID based on epoch values (the time elapsed between the current timestamp and a pre-decided given timestamp). So, here the uniqueness property gets violated.
+
+> [!question] Why can’t we use Timestamp + ServerID values to generate the IDs?
+>	The question here would be how many bits are to be assigned to the Timestamp and ServerID. This situation would be tricky.
+
 A **64-bit Snowflake ID** might look like:
 
 ```
@@ -199,6 +161,13 @@ A **64-bit Snowflake ID** might look like:
 
 ![[snowflake_working.svg]]
 
+### Coordination Service (Optional)
+
+- Needed to assign unique **machine IDs** to each generator instance.
+- Could use:
+    - **Zookeeper** or **etcd**.
+    - Or even a static config in small deployments.
+
 ### The benefits of using Snowflake ID
 
 - **High precision:** The timestamp component of the ID provides high precision and accuracy for tracking events and transactions.
@@ -212,9 +181,293 @@ A **64-bit Snowflake ID** might look like:
 - Scalable (it can accommodate 1024 machines)
 - Highly available (Each machine can generate 4096 unique IDs each millisecond)
 - Some of the UUID versions do not include a timestamp. In this case, Twitter Snowflake has a sortable advantage.
-- 
+
 ### Disadvantages
 
 - Design requires Zookeeper (disadvantage)
 - The generated IDs are not random like UUIDs. Future IDs can predictable.
 - The maximum timestamp that can be represented in 41 bits is (~ 69 years). Need a solution after this :)
+
+
+| ✅ Pros                                     | ❌ Cons                                             |
+| ------------------------------------------ | -------------------------------------------------- |
+| K-sortable (roughly time-ordered)          | Relies on system clock (needs clock sync handling) |
+| High throughput (~1M IDs/sec per node)     | Limited to a fixed number of nodes/sequence bits   |
+| Can be generated locally, very low latency |                                                    |
+
+# Other Approaches
+
+## Redis/Zookeeper/etcd-based Counters
+
+Use Redis/ZK/etcd to maintain a centralized counter via atomic increment (INCR, CAS, etc).
+
+| ✅ Pros             | ❌ Cons                                    |
+| ------------------ | ----------------------------------------- |
+| Simple             | Network latency                           |
+| Strong consistency | Doesn’t scale well under high QPS         |
+| Globally unique    | Single point of bottleneck unless sharded |
+
+## Batch ID Preallocation (Segmented ID Generator)
+
+**Example:** Facebook’s HiLo or Twitter’s Leaf
+
+- Central service allocates a range of IDs (e.g. 1000–1999) to each service/node.
+- Nodes generate within that range.
+
+| ✅ Pros                                                       | ❌ Cons                             |
+| ------------------------------------------------------------ | ---------------------------------- |
+| Reduces DB load                                              | Requires occasional coordination   |
+| Supports distributed ID generation with central coordination | Risk of ID waste (unused segments) |
+|                                                              | Still not totally decentralized    |
+
+## Hash-Based IDs (e.g., Hash of Request + Salt)
+
+- Generate a hash of request metadata (timestamp + node ID + randomness + salt).
+- Often SHA-256 or MurmurHash.
+
+| ✅ Pros                            | ❌ Cons                                     |
+| --------------------------------- | ------------------------------------------ |
+| Deterministic                     | Need to ensure hash collisions are handled |
+| Compact                           | No ordering                                |
+| Works well when inputs are unique |                                            |
+
+## KSUID / ULID / Sonyflake / NanoID
+
+| **Format**    | **Ordered?** | **Size** | **Description**                      |
+| ------------- | ------------ | -------- | ------------------------------------ |
+| **KSUID**     | Yes          | 27 chars | K-sortable, timestamp + random       |
+| **ULID**      | Yes          | 26 chars | Base32-encoded time + randomness     |
+| **Sonyflake** | Yes          | 64 bits  | Like Snowflake but works well on AWS |
+| **NanoID**    | No           | Custom   | URL-safe, customizable size          |
+
+| ✅ Pros                   | ❌ Cons                                   |
+| ------------------------ | ---------------------------------------- |
+| Human-friendly (some)    | May not be standardized                  |
+| Some offer K-sortability | Some require node coordination or config |
+| Shorter than UUIDs       |                                          |
+
+## Using Kafka Offset or Log Sequence Numbers
+
+- Each record in Kafka or log has a unique **offset or sequence number**.
+- You can piggyback on those as unique IDs.
+
+| ✅ Pros                                    | ❌ Cons                                         |
+| ----------------------------------------- | ---------------------------------------------- |
+| Already unique and ordered in a partition | Not suitable for general-purpose ID generation |
+| Great for event sourcing or logs          | Only works within Kafka/log domain             |
+
+## Custom Token Services (e.g., ID Generation Microservice)
+
+- Build a centralized microservice that hands out unique IDs via API.
+
+| ✅ Pros                                               | ❌ Cons                                              |
+| ---------------------------------------------------- | --------------------------------------------------- |
+| Central logic                                        | Needs to be highly available and scalable           |
+| Can include metadata in the ID (e.g., sharding info) | Can become a bottleneck or SPOF without replication |
+
+## Ticket Server
+
+- Developed by Flickr, It is a dedicated database server, with a single database on it.
+- Used to generate distributed unique primary keys
+- In that database there are tables like `Tickets32` for 32-bit IDs, and `Tickets64` for 64-bit IDs.
+
+The idea is to use a centralized _auto_increment_ feature in a single database server (Ticket Server).
+
+| ✅ Pros                                            | ❌ Cons                  |
+| ------------------------------------------------- | ----------------------- |
+| Numeric IDs                                       | Single point of failure |
+| Easy to implement                                 |                         |
+| Works well for small to medium-scale applications |                         |
+
+
+To avoid a SPOF, we can set up multiple ticket servers. However, this will introduce new challenges such as data synchronization.
+
+
+---
+# **TL;DR – What to Use When?**
+
+| **Scenario**                        | **Recommended Approach** |
+| ----------------------------------- | ------------------------ |
+| Low-scale, single instance          | DB auto-increment        |
+| Fully distributed, time-ordered IDs | Snowflake / ULID / KSUID |
+| Stateless, collision-safe IDs       | UUIDv4 or UUIDv7         |
+| High-scale with coordination        | Segment-based allocation |
+| Event/log ID generation             | Kafka offset             |
+
+
+Absolutely, let’s dive into **Clock Synchronization Tolerance** – it’s a **crucial challenge** in distributed systems, especially in systems like distributed ID generators that rely on **timestamps**.
+
+---
+
+## **⏱️ What is Clock Synchronization Tolerance?**
+
+  
+
+**Clock synchronization tolerance** refers to the system’s ability to **handle discrepancies** between the system clocks of different nodes/machines **without malfunctioning** or producing incorrect results.
+
+  
+
+> In a distributed system, each machine has its own local clock. These clocks are not guaranteed to be perfectly in sync, even when using NTP (Network Time Protocol).
+
+---
+
+## **🧨 The Problem in Distributed ID Generation**
+
+  
+
+If your ID format includes a **timestamp** (e.g., Snowflake-style), this causes several risks:
+
+  
+
+### **1.** 
+
+### **Clock Drift**
+
+- Each machine’s clock can drift slightly over time, especially if NTP sync is delayed or network latency varies.
+    
+- For example: Machine A thinks it’s 12:00:01, while Machine B thinks it’s 12:00:00.500.
+    
+
+  
+
+### **2.** 
+
+### **Clock Skew**
+
+- Worse than drift – this is a **fixed offset** in time across machines.
+    
+- Some machines can consistently run ahead or behind due to hardware or config issues.
+    
+
+  
+
+### **3.** 
+
+### **Clock Going Backwards (🫠)**
+
+- Happens if:
+    
+    - NTP adjusts a fast-running clock _backward_.
+        
+    - Manual clock changes.
+        
+    - Virtual machines are paused/resumed.
+        
+    
+- If your node had issued ID T=123456, and clock moves to T=123455, you risk:
+    
+    - **ID Collisions** if you’re generating the same timestamp again.
+        
+    - **Sequence logic breaking** (e.g., if IDs must be monotonically increasing).
+        
+    
+
+---
+
+## **⚠️ Impact on System**
+
+|**Problem**|**Impact**|
+|---|---|
+|Clock goes backward|May create **duplicate IDs** or throw exceptions|
+|Clocks are out of sync|**Time-based ordering** is broken|
+|Large skew|Some nodes may issue **“future” timestamps**|
+|Inconsistent behavior|Debugging & tracing becomes hard|
+
+  
+
+---
+
+## **🛡️ Mitigation Strategies**
+
+  
+
+### **✅ 1.** 
+
+### **Monotonic Clock Check**
+
+- Track the **last timestamp** used.
+    
+- If current time < last timestamp → **wait until last timestamp + 1ms**.
+    
+- Simple, safe, but might delay generation briefly.
+    
+
+  
+
+### **✅ 2.** 
+
+### **Use Logical Clocks or Hybrid Clocks**
+
+- Hybrid Logical Clocks (HLC) combine **physical time** and **logical counter**.
+    
+- Used in Spanner & CockroachDB.
+    
+- Helps retain order while tolerating minor clock issues.
+    
+
+  
+
+### **✅ 3.** 
+
+### **NTP Monitoring**
+
+- Continuously monitor NTP sync status.
+    
+- Mark a node “unhealthy” if clock drifts beyond a threshold (e.g. 250ms).
+    
+
+  
+
+### **✅ 4.** 
+
+### **Don’t Rely on System Time Alone**
+
+- Consider storing the **max ID generated** and prevent any lower timestamp reuse.
+    
+- If clock moves backward, you can either:
+    
+    - Wait it out.
+        
+    - Or use a **sequence number** to disambiguate.
+        
+    
+
+  
+
+### **✅ 5.** 
+
+### **Clock Sync Daemons**
+
+- Run services like chronyd or ntpd with high-precision, frequent updates.
+    
+
+---
+
+## **🧪 Example Scenario**
+
+  
+
+Imagine this:
+
+- Node A generates an ID at timestamp T=1700000000000.
+    
+- NTP adjusts the clock back to T=1699999999000.
+    
+- Now node A tries to generate another ID with this lower timestamp → It **collides** with an earlier ID unless you handle it.
+    
+
+---
+
+## **💡 Best Practice in Snowflake-like Systems**
+
+  
+
+> “If clock moves backwards, **pause ID generation until the clock catches up**.”
+
+  
+
+This avoids ID duplication but can **briefly affect availability** of the service.
+
+---
+
+Let me know if you want a diagram to visualize this, or we can go through how to implement this in code (e.g., Java, Go).

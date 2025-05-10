@@ -190,12 +190,12 @@ A straightforward solution is to use well-known hash functions like CRC32, MD5, 
 
 We will compute its hash values using **CRC32, MD5, SHA-1, and SHA-256**.
 
-| **Hash Function** | **Hash Value (Hexadecimal)**                                     | **Hash Length (Bits)** |
-| ----------------- | ---------------------------------------------------------------- | ---------------------- |
-| **CRC32**         | 5A0B8C3F                                                         | 32 bits (4 bytes)      |
-| **MD5**           | 56e1dfffc1d5566b6f8599e2a0a80372                                 | 128 bits (16 bytes)    |
-| **SHA-1**         | 994d38563a3f5b8e4b38df3e91842d07be3fbb7b                         | 160 bits (20 bytes)    |
-| **SHA-256**       | e7ef4b80e60274d8db3a8bb07171b3662cba3dcdbb66eb36899dc3cf52dc28f3 | 256 bits (32 bytes)    |
+| **Hash Function** | **Hash Value (Hexadecimal)**                                         | **Hash Length (Bits)** |
+| ----------------- | -------------------------------------------------------------------- | ---------------------- |
+| **CRC32**         | 5A0B8C3F                                                             | 32 bits (4 bytes)      |
+| **MD5**           | 56e1dfffc1d5566b6f8599e2a0a80372                                     | 128 bits (16 bytes)    |
+| **SHA-1**         | 994d38563a3f5b8e4b38df3e91842d07be3fbb7b                             | 160 bits (20 bytes)    |
+| **SHA-256**       | e7ef4b80e60274d8db3a8bb07171b3662cba3dcdb<br>b66eb36899dc3cf52dc28f3 | 256 bits (32 bytes)    |
 
 - **If we directly use a hash as a short URL**, we must **truncate** it and take the first 7 characters.
 - **Truncation increases collision risk** since a hash function generates a longer output than needed for URL shortening.
@@ -264,7 +264,7 @@ To achieve **fixed-length Base62 encoding**, use one of these approaches:
 **Cons:** It is easy to figure out what is the next available short URL if ID is incremented by 1 for a new entry. This can be a security concern.
 
 ```mermaid
-flowchart LR
+flowchart TD
     A[Start] --> B[Input longURL]
     B --> C{Is longURL in database?}
     C -->|Yes| D[Fetch existing shortURL]
