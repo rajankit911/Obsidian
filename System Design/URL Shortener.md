@@ -15,7 +15,7 @@
 4. **Consistency vs. Availability** – We prioritize availability over strong consistency (AP in CAP theorem).
 5. **Security** – URL should not be predictable. Prevent abuse, phishing, and spam.
 
-# **Back of envelope calculation**
+# Back-of-the-Envelope (BOE) Estimation
 
 ## Traffic Estimation
 
