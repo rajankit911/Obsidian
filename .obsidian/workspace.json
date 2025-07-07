@@ -13,29 +13,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Database Internals/Page Cache.md",
+                "file": "Java Concurrency/Thread Coordination.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Page Cache"
+              "title": "Thread Coordination"
             }
           },
           {
-            "id": "f0697bd240597bb0",
+            "id": "45f787113f4dec0d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Database Internals/Write Ahead Logging (WAL).md",
-                "mode": "source",
+                "file": "Java Concurrency/Thread Coordination.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Write Ahead Logging (WAL)"
+              "title": "Thread Coordination"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -88,8 +89,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -155,13 +155,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Database Internals/Write Ahead Logging (WAL).md",
+                "file": "Java Concurrency/Thread Coordination.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Write Ahead Logging (WAL)"
+              "title": "Outline of Thread Coordination"
             }
           }
         ],
@@ -183,16 +183,26 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "4cfbd02435746541",
+  "active": "45f787113f4dec0d",
   "lastOpenFiles": [
-    "Database Internals/Write Ahead Logging (WAL).md",
+    "Java Concurrency/Thread Life Cycle.md",
+    "Java Concurrency/Multi-threading.md",
+    "Java Concurrency/Stopping a thread.md",
+    "Java Concurrency/Thread Coordination.md",
+    "Java Concurrency/Runnable vs Callable.md",
+    "Java Concurrency/Java Monitor.md",
+    "Spring JPA/Primary Key Generations.md",
+    "Java Collection Framework/Iterator.md",
+    "Java Collection Framework/HashMap.md",
+    "Java Concurrency/ExecutorService.md",
+    "Java Concurrency/Future.md",
     "Database Internals/Page Cache.md",
+    "Database Internals/Write Ahead Logging (WAL).md",
     "Database Internals/Checkpoint Process.md",
     "Database Internals/Approaches to offload database.md",
     "Database Internals/How tables and indexes are stored on disk.md",
     "Database Internals/LSM Tree.md",
     "System Design/Distributed Rate Limiter.md",
-    "Spring JPA/Primary Key Generations.md",
     "System Design/Algorithms/Rate Limiting Algorithms.md",
     "Spring JPA",
     "Excalidraw/Algorithms/images/leaky_bucket.svg",
@@ -207,24 +217,14 @@
     "System Design/Distributed System Concepts/Consistent Hashing.md",
     "System Design/TO-DO.md",
     "System Design/Unique ID Generator.md",
-    "System Design/Top K Problem.md",
     "System Design/images/cache-aside.png",
-    "Excalidraw/System Design/snowflake_working.excalidraw.md",
     "Excalidraw/System Design/images/twitter_snowflake.svg",
     "Excalidraw/System Design/images/snowflake_working.svg",
-    "Excalidraw/Drawing 2025-04-20 00.58.44.excalidraw.md",
     "Pasted Image 20250420142718_371.svg",
     "Excalidraw/snowflake_working.svg",
     "snowflake_working.svg",
-    "Excalidraw/System Design/twitter_snowflake.excalidraw.md",
     "Pasted image 20240406212106.png",
     "Pasted image 20240713163031.png",
-    "Excalidraw/System Design/multi_master_id_generation.excalidraw.md",
-    "Excalidraw/System Design/zookeeper_lock.excalidraw.md",
-    "Excalidraw/System Design/url_shortener.excalidraw.md",
-    "Excalidraw/Kafka/commit_offset_request.excalidraw.md",
-    "Excalidraw/Kafka/consumer_offset.excalidraw.md",
-    "Kafka/Offset Management.md",
     "Excalidraw/Kafka/images",
     "Excalidraw/Kafka",
     "Kafka",

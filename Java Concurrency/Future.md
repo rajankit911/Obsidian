@@ -170,7 +170,7 @@ In summary, CompletableFuture provides a more flexible and powerful API for work
 
 - `supplyAsync()` is a method used to execute a task asynchronously that produces a result.
 - By default task gets executed in the `ForkJoinPool.commonPool()`.
-- It accepts a `Supplier` functional interface and returns a CompletableFuture<T>, where T is the type of the result produced by the task.
+- It accepts a `Supplier` functional interface and returns a `CompletableFuture<T>`, where T is the type of the result produced by the task.
 - It’s ideal for tasks that require a result for further processing. For example, fetching data from a database, making an API call, or performing a computation asynchronously.
 - It offers an exception-handling mechanism via the `exceptionally()` method.
 - We can use this function to handle the exception thrown during the execution of the asynchronous task and return a default value or perform any necessary cleanup operations.
