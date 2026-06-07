@@ -4,39 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "5d3a3ac6dfb7c0c5",
+        "id": "d6855a3b77c0f975",
         "type": "tabs",
         "children": [
           {
-            "id": "4cfbd02435746541",
+            "id": "83ea01574ed05746",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Java Concurrency/Thread Coordination.md",
+                "file": "Photo Proofing/API Design.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Thread Coordination"
-            }
-          },
-          {
-            "id": "45f787113f4dec0d",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Java Concurrency/Thread Coordination.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Thread Coordination"
+              "title": "API Design"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -155,13 +140,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Java Concurrency/Thread Coordination.md",
+                "file": "Photo Proofing/API Design.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Thread Coordination"
+              "title": "Outline of API Design"
             }
           }
         ],
@@ -174,6 +159,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -183,40 +169,43 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "45f787113f4dec0d",
+  "active": "83ea01574ed05746",
   "lastOpenFiles": [
-    "Java Concurrency/Thread Life Cycle.md",
-    "Java Concurrency/Multi-threading.md",
-    "Java Concurrency/Stopping a thread.md",
-    "Java Concurrency/Thread Coordination.md",
-    "Java Concurrency/Runnable vs Callable.md",
-    "Java Concurrency/Java Monitor.md",
+    "Redis/Redis Topology Architecture.md",
+    "2026-01-30.md",
+    "Redis/Redis Hash TTL with Redisson RMapCache.md",
+    "Spring JPA/spring.jpa.defer-datasource-initialization.md",
+    "System Design/Distributed System Concepts/Distributed Locking and Synchronization.md",
     "Spring JPA/Primary Key Generations.md",
-    "Java Collection Framework/Iterator.md",
-    "Java Collection Framework/HashMap.md",
-    "Java Concurrency/ExecutorService.md",
-    "Java Concurrency/Future.md",
-    "Database Internals/Page Cache.md",
-    "Database Internals/Write Ahead Logging (WAL).md",
-    "Database Internals/Checkpoint Process.md",
-    "Database Internals/Approaches to offload database.md",
-    "Database Internals/How tables and indexes are stored on disk.md",
-    "Database Internals/LSM Tree.md",
-    "System Design/Distributed Rate Limiter.md",
-    "System Design/Algorithms/Rate Limiting Algorithms.md",
+    "Redis",
+    "Spring Framework/Spring Transaction Management.md",
+    "Spring Framework/Spring Bean Life Cycle.md",
+    "Spring Framework/Spring AOP Proxy.md",
+    "Spring Framework/4. BeanPostProcessor.md",
+    "Spring Framework/5. BeanFactoryPostProcessor.md",
+    "Java Fundamentals/JDK Dynamic Proxy vs CGLIB.md",
+    "Questions.md",
+    "NGINX/NGINX API Gateway.md",
+    "NGINX/NGINX Configuration File.md",
+    "NGINX/NGINX Directives.md",
+    "NGINX/How NGINX processes a request.md",
+    "Kafka/Interview Questions.md",
+    "Kafka/Offset Management.md",
+    "Kafka/Durability, Availability, and Ordering Guarantees.md",
+    "Kafka/Consumer Groups.md",
+    "Kafka/Consumer Group Rebalancing.md",
+    "Kafka/Consumer Group Protocol.md",
+    "Photo Proofing/API Design.md",
+    "Excalidraw/Kafka/commit_offset_request.excalidraw.md",
+    "Excalidraw/Kafka/images/find_group_coordinator.svg",
+    "Kafka/Partition Assignment Strategies.md",
+    "Photo Proofing",
     "Spring JPA",
     "Excalidraw/Algorithms/images/leaky_bucket.svg",
     "Excalidraw/Algorithms/images/token_bucket.svg",
-    "Excalidraw/Algorithms/leaky_bucket.excalidraw.md",
-    "Excalidraw/Algorithms/token_bucket.excalidraw.md",
     "Excalidraw/Algorithms/images",
     "Excalidraw/Algorithms",
-    "System Design/URL Shortener.md",
-    "System Design/Distributed System Concepts/Distributed Locking and Synchronization.md",
     "System Design/Algorithms",
-    "System Design/Distributed System Concepts/Consistent Hashing.md",
-    "System Design/TO-DO.md",
-    "System Design/Unique ID Generator.md",
     "System Design/images/cache-aside.png",
     "Excalidraw/System Design/images/twitter_snowflake.svg",
     "Excalidraw/System Design/images/snowflake_working.svg",
@@ -224,13 +213,10 @@
     "Excalidraw/snowflake_working.svg",
     "snowflake_working.svg",
     "Pasted image 20240406212106.png",
-    "Pasted image 20240713163031.png",
     "Excalidraw/Kafka/images",
     "Excalidraw/Kafka",
     "Kafka",
     "Java Collection Framework",
-    "Java Concurrency",
-    "Java 8",
     "Untitled.canvas",
     "Java Design Patterns/Untitled.canvas"
   ]
