@@ -80,6 +80,28 @@ A primary-secondary replication setup where one Master node accepts writes and r
 > [!WARNING]
 > While this topology improves read throughput and data redundancy, it is **not** highly available because failover requires manual intervention.
 
+### How Read Request Distribution Works
+Since Redis itself **does not** automatically route client traffic or load balance read requests from the Master node to the Slaves, distribution must be handled externally. There are two main approaches:
+
+#### A. Client-Side Routing (Preferred & Common)
+Smart Redis clients (e.g., Lettuce or Redisson in Java, `redis-py` in Python) are configured with the addresses of both the Master and all Slave nodes. The client library handles the routing logic internally:
+- **Read Preferences**: You configure the client's read policy:
+  - `MASTER`: Reads only from the Master node (default).
+  - `REPLICA` / `SLAVE`: Reads only from Slave nodes.
+  - `REPLICA_PREFERRED`: Attempts to read from Slave nodes, falling back to Master if all Slaves are unavailable.
+  - `NEAREST`: Reads from the node with the lowest network latency.
+- **Load Balancing**: The client library distributes read requests across the healthy Slaves, typically using a round-robin algorithm.
+
+#### B. Proxy-Side / Load Balancer Routing
+An external TCP load balancer (e.g., HAProxy, NGINX TCP load balancing, or Envoy) is placed in front of the Redis nodes:
+- **Setup**: Two separate connection pools or virtual IP (VIP) addresses are created:
+  - **Write VIP**: Points only to the Master node.
+  - **Read VIP**: Points to all Slave nodes. The load balancer distributes traffic among them using policies like round-robin or least connections.
+- **Health Checks**: The load balancer runs periodic checks (e.g., executing the `PING` or `ROLE` command) to remove unhealthy Slaves from the pool.
+
+> [!IMPORTANT]
+> **Replication Lag & Consistency**: Because replication is asynchronous, a write to the Master might take a few milliseconds (or longer under high load) to propagate to the Slaves. Client reads routed to Slaves are **eventually consistent** and may temporarily return stale data.
+
 ### Pros & Cons
 | Pros | Cons |
 | :--- | :--- |
