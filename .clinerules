@@ -69,3 +69,9 @@ All markdown files written or edited in this vault must strictly comply with Obs
 - **Clarity and Depth**: Ensure technical notes are precise, accurate, and explain concepts clearly.
 - **Hierarchy**: Use clear, semantic heading hierarchies (`#`, `##`, `###`, `####`).
 - **Conciseness**: Keep explanations direct and avoid unnecessary filler text.
+
+---
+
+## 4. Git & Workflow Rules
+- **No Auto-Commits**: **DO NOT** commit files or modifications to Git automatically.
+- **Explicit Permission**: Only write, stage, or edit files. Always wait for the user to explicitly request a Git commit before running any `git commit` commands.
