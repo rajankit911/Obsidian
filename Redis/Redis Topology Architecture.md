@@ -142,6 +142,9 @@ A high-availability solution built on top of Master-Slave replication. A separat
 > [!NOTE]
 > Sentinels do not shard data; they only provide High Availability (HA) for a single logical Master-Slave group. To prevent split-brain scenarios, a minimum of 3 Sentinel instances is required.
 
+> [!TIP]
+> For details on production deployment patterns, quorum configurations, and how to co-locate Sentinel processes on existing nodes to minimize infrastructure costs, see the separate note: [[Redis Sentinel Deployment]].
+
 ### Pros & Cons
 | Pros | Cons |
 | :--- | :--- |
