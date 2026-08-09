@@ -27,6 +27,261 @@ last_modified: 2026-06-21
 
 ---
 
+
+## Cache Stampede
+
+The problem where multiple concurrent requests simultaneously find a cache entry expired and then all proceed to try and regenerate the data (usually by calling a slower backend service) is called a **Cache Stampede/Thundering Herd/Dogpile effect**
+
+### A Cache Stampede is dangerous for several reasons:
+
+1. **Backend Overload:** The most immediate danger is the sudden, massive influx of requests to the backend service (in your case, the external market data API). This can **overwhelm** the API, leading to high latency, errors, or even a complete **Denial of Service (DoS)** for that API. Given your system handles 50,000 RPS, even a fraction of those hitting the external API simultaneously could be catastrophic.
+2. **Increased Latency:** The system must wait for the external API to respond, causing **high and unpredictable latency** for all the users waiting for the stock quote.
+3. **Resource Exhaustion:** Your own application servers might become overloaded as they try to manage thousands of concurrent, long-running requests to the external API, leading to **thread pool exhaustion** or high CPU usage.
+
+
+## 9 hidden triggers that cause cache stampedes
+
+## 1) TTL alignment (“the midnight cliff”)
+
+If many keys share the same TTL (e.g., 5 minutes) and were written around the same time (deploy, warm-up job, batch import), they can expire in a synchronized wave.
+
+**Real-world example:** A dashboard cache for “top products” is generated during startup and set with `TTL=300s`. Five minutes later, a surge of users lands—boom. Everything expires together.
+
+**Fix:** Add **TTL jitter** (randomization) so expirations spread out.
+
+## 2) Cold starts that wipe local state
+
+Serverless, autoscaling groups, container restarts — these can erase local in-memory caches or per-instance locks you _thought_ were protecting you.
+
+You might be wondering: “But we use Redis.” Sure. But your app might still have a local memoization layer, or a local single-flight lock, or a warmed connection pool that disappears.
+
+**Fix:** Assume restarts happen during peak. Keep stampede protection **distributed** when necessary (or at least resilient to instance churn).
+
+## 3) Hot keys created by “success”
+
+Not all keys are equal. A single key like:
+
+- `homepage:feed`
+- `pricing:plans`
+- `product:123`
+- `search:trending`
+
+…can dominate traffic. When it expires, it’s not “some misses.” It’s _most of your business_.
+
+**Fix:** Identify hot keys by request volume, not by intuition. Treat them differently: longer TTL, SWR, pre-warm, or dedicated refresh jobs.
+
+## 4) Thundering herds from retries and timeouts
+
+When the backend slows down, clients retry. Load balancers retry. SDKs retry. Your own app may retry. Each retry is another “request” participating in the stampede.
+
+That’s how a small miss turns into a catastrophe: the system becomes slower, so it generates _more traffic_, which makes it slower again.
+
+**Fix:** Cap retries, add backoff + jitter, and surface “served stale” instead of retrying into a failing dependency.
+
+## 5) Cache invalidation storms
+
+Sometimes you don’t wait for TTL — you invalidate.
+
+- Content updated? Purge.
+- Price changed? Purge.
+- Deploy? Purge.
+- Incident? Purge everything (we’ve all seen it).
+
+Invalidation can synchronize misses even more aggressively than TTL.
+
+**Fix:** Prefer **versioned keys** (write new key, let old expire) or staged invalidation by segment.
+
+## 6) Eviction pressure and memory fragmentation
+
+Your cache may evict keys early when memory is tight. Under load, the “working set” changes, eviction rises, and suddenly your hot keys aren’t hot in cache anymore.
+
+**Fix:** Monitor eviction rate, memory usage, and key distribution. Consider separating “hot critical” keys into a reserved cache or namespace with different policies.
+
+## 7) Fan-out endpoints hiding behind one key
+
+Some cached values are expensive because they trigger a fan-out: 1 request becomes 30 DB queries or 10 microservice calls.
+
+So when stampede hits, it’s not “N recomputations.” It’s “N * fan-out,” which is how you max out everything at once.
+
+**Fix:** Break apart caches (cache subcomponents), reduce fan-out, and add per-dependency circuit breakers.
+
+## 8) Background refresh jobs that don’t coordinate
+
+Teams add “refresh workers” to precompute values. Good idea… until 20 workers refresh the same hot key because they’re not coordinated or they race after a failure.
+
+**Fix:** Ensure refresh is **idempotent** and coordinated: leader election, single-flight, or distributed lock with a strict timeout.
+
+## 9) Multi-region cache misses and cross-zone latency
+
+If you run multi-region or multi-zone, cross-region cache access can be slow or inconsistent. A region may miss while another is warm, or replication lag causes partial warms.
+
+**Fix:** Design for locality: region-local caches, SWR, and graceful degradation. Don’t let a region cold-start become a global stampede
+
+
+## Common Mistakes in Cache Implementation
+
+Besides the three strategies above, several **anti-patterns** often make systems fragile:
+
+## 1. Assuming “Using Redis = Problem Solved”
+
+Redis is just **one component** of a caching solution. If:
+
+- Your expiry pattern is wrong,
+- TTLs are arbitrary,
+- You have no mechanism to prevent stampede,
+
+then you’re only **delaying the problem**, not solving it.
+
+## 2. Arbitrary / Too-Short Cache TTL
+
+TTL that’s too short:
+
+- Forces frequent cache expiry,
+- Causes more frequent database hits,
+- Increases the risk of cache stampede.
+
+### A More Reasonable Way to Choose TTL
+
+TTL should be:
+
+1. **Longer** than the update frequency of the data  
+    (if data changes every 1 minute, don’t cache it for only 10 seconds).
+2. **Longer** than the average time required to recompute/refresh the data.
+3. **Wider** than typical traffic spike intervals.
+
+Common practice:
+
+- TTL = **3–10×** the average time of the query being cached.
+
+Example:
+
+- The query takes ~200 ms on average.
+- TTL of 1–2 seconds is too short (you’ll refresh it constantly).
+- A better TTL is several seconds up to minutes, depending on how frequently the data changes.
+
+Additional principle:
+
+- TTL should follow the **cost** and **volatility** of data:
+- Expensive-to-compute data → longer TTL,
+- Frequently changing data → shorter TTL,
+- Always add **jitter** (staggered TTL).
+
+## 3. Using Redlock Everywhere
+
+**Redlock** is a distributed lock algorithm across multiple Redis nodes, designed by Redis’s creator.
+
+Its purpose:
+
+- A lock is considered acquired only if it’s successfully obtained on a **majority** of Redis nodes.
+- Suitable for **highly critical** operations that require strong consistency across a multi-node Redis setup.
+
+However:
+
+- It’s **not a silver bullet**.
+- It depends heavily on **stable, low-latency network conditions**.
+
+If the network:
+
+- Sometimes has 2 ms latency and sometimes 80 ms,
+- Some nodes respond slowly,
+- Clients receive lock confirmations late,
+
+then you may experience:
+
+- Locks that appear to fail even though they actually succeeded, or
+- Even worse: locks that appear valid even after they’ve effectively expired.
+
+This can become a new source of **inconsistency**.
+
+Recommendations:
+
+- Use Redlock **only for very critical operations**.
+- Don’t blindly apply it to every cache refresh.
+- Understand your network and Redis cluster characteristics before relying on Redlock.
+
+## 4. Running Heavy Queries Directly on Cache Miss
+
+A common pattern:
+
+- In an API handler:
+- Check cache → miss,
+- Immediately run a heavy query (joins multiple tables, heavy aggregation),
+- Or call an external API with strict rate limits.
+
+Without protection, during a stampede:
+
+- Dozens of instances might simultaneously:
+- Execute heavy queries against the database, or
+- Hammer an external API until you hit **rate limits**, causing widespread errors.
+
+### Extra Protection for Heavy Queries
+
+At minimum, do three things:
+
+1. **Single-Flight / Mutex Lock**  
+    Ensure that only one goroutine/worker runs the heavy query when there is a cache miss.
+2. **Fallback to Old Data**  
+    If refresh fails or takes too long, use:
+
+- Old data from cache (logical expiration), or
+- Another lighter fallback.
+
+**3. Rate Limiting / Token Bucket for External APIs**  
+For external services:
+
+- Add a rate limiter or token bucket,
+- Make sure your caching mechanism doesn’t cause your system to flood the external API.
+
+## Final Summary
+
+**Cache stampede** is not a minor issue. It’s often the hidden reason behind:
+
+- Sudden database spikes,
+- Occasionally weird latency,
+- Systems crashing during traffic surges even when business logic seems normal.
+
+Key points to remember:
+
+1. **Redis is not an automatic savior**  
+    The patterns you use (TTL, locks, expiry handling, etc.) determine whether your system is **solid or fragile**.
+2. Three main strategies to handle cache stampede:
+
+- **Cache with mutex / single-flight**  
+    Only one request hits the database to refresh; others wait.
+- **Logical expiration**  
+    Return old data to users; refresh in the background.
+- **Staggered TTL (TTL + jitter)**  
+    Spread out expirations to avoid synchronized spikes.
+
+3. Avoid common mistakes:
+
+- Arbitrary or too-short TTLs,
+- Blindly relying on Redlock without understanding your network,
+- Firing heavy DB queries or external API calls directly on every cache miss with no protection.
+
+Implement these three strategies correctly, and your system will be much more ready to scale and handle high traffic without your monitoring dashboard giving you a heart attack every time traffic climbs.
+
+
+### 5. Tiered / Multi-Layered Caching 🏗️
+
+Introduce caching at multiple levels:
+
+- **L1 (local in-process)** — fastest, short TTL.
+- **L2 (distributed cache like Redis/Memcached)** — medium TTL.
+- **CDN/Edge caching** — longer TTLs.
+
+This spreads load and reduces risk of all layers stampeding at once.
+
+### 6. Adaptive Refresh Windows 🧠
+
+Smarter systems track **key popularity**:
+
+- Hot keys = refresh more aggressively (pre-warm before TTL).
+- Cold keys = allow natural expiry.
+
+This way, the hottest items never expire “cold” under heavy load.
+
+
 ## **🛡️ Mitigation Strategies**
 
 To prevent a cache stampede without killing system performance, several strategies can be employed:
@@ -34,6 +289,21 @@ To prevent a cache stampede without killing system performance, several strategi
 ### **✅ 1. Mutex Locking (The Barrier Approach)**
 
 The most direct way to stop a stampede is to ensure only one thread can rebuild the cache at a time. When a cache miss occurs, the worker must acquire a lock before querying the database.
+
+```mermaid
+sequenceDiagram
+    participant Req as Request 1
+    participant Redis
+    participant DB
+
+    Req->>Redis: Cache Miss
+    Req->>Redis: Acquire Lock
+    Redis-->>Req: Lock Granted
+    Req->>DB: Load Data
+    DB-->>Req: Result
+    Req->>Redis: Update Cache
+    Req->>Redis: Release Lock
+```
 
 ```java
 public byte[] getWithLock(String key, Duration ttl) throws InterruptedException {
@@ -66,6 +336,8 @@ public byte[] getWithLock(String key, Duration ttl) throws InterruptedException 
 
 > [!CAUTION]
 > Distributed locks introduce their own failure modes. If the worker holding the lock crashes or times out, you can stall your entire request pipeline. You must set strict, short timeouts on these locks to prevent cascading failures.
+> 
+> Mutex locking adds latency for all the workers that lose the race, as they sit and poll the cache waiting for the winner to finish. If your database is slow, those waiting threads can balloon your web server’s process count and exhaust memory.
 
 ### **✅ 2. Distributed Lock with Stale Fallback (Stale-While-Revalidate)**
 
@@ -158,6 +430,21 @@ public CompletableFuture<User> getUser(Context ctx, String userID) {
 }
 ```
 
+
+```java
+private final ConcurrentHashMap<String, CompletableFuture<String>> inflight = new ConcurrentHashMap<>();  
+  
+public String getCachedValue(String key) {  
+    CompletableFuture<String> f = inflight.computeIfAbsent(key, k ->  
+        CompletableFuture.supplyAsync(() -> loadFromDatabase(k))  
+            .whenComplete((v, ex) -> inflight.remove(k)) // clear on success or failure  
+    );  
+    String value = f.join();  
+    localCache.put(key, value);  
+    return value;  
+}
+```
+
 Now the "Promise" is written synchronously, before any yield happens. Every concurrent caller that comes in after the first one finds the `CompletableFuture` already there and awaits the same result. The fetch fires exactly once (per node) regardless of how many callers are waiting. One fetch. Every caller gets the result. The herd never forms.
 
 This specific technique applies to in-memory caches and process-local deduplication. With Redis or a distributed cache, you’d tackle this differently, typically with a lock (Strategy 1). The underlying problem is identical; only the tool for solving it changes.
@@ -178,7 +465,7 @@ $$
 Where _delta_ is the delta time it takes to compute the value, and $\beta$ is an aggressive constant greater than 0. For cheap-to-compute, expensive-to-miss keys, this is almost always the right call. Set $\beta$ between 1.0 and 2.0 — higher values push re-computation further from expiry.
 
 > [!Caution]
-> This strategy decouples the cache regeneration from the hard expiration time. The tradeoff: you’re doing slightly more re-computation than strictly necessary.
+> This strategy decouples the cache regeneration from the hard expiration time. The tradeoff: you’re doing slightly more re-computation than strictly necessary. _XFetch_ solves the latency problem but adds computational overhead. Running logarithmic math on every hot cache read uses CPU cycles. It also means you are actively refreshing keys that might not actually need to be kept alive, wasting database resources on low-value data if your traffic patterns shift.
 
 ```java
 static class XFetchEntry {
@@ -262,6 +549,19 @@ P99 latency for warm requests becomes effectively zero — you never block on re
 
 A simple but highly effective technique to prevent synchronized expirations. You add a random "jitter" to each key's TTL (e.g., `TTL = 3600s + random(0, 300)s`).
 
+```mermaid
+flowchart LR
+    A["Same TTL"] --> B["Mass Expiration"]
+    C["TTL Jitter"] --> D["Distributed Expiration"]
+```
+
+
+###  Adaptive Prefetching
+
+- Detect hot keys dynamically.
+- Refresh them **before they expire**.
+- Keeps them always “warm.”
+
 ---
 
 ## **⚖️ Trade-offs Between Strategies**
@@ -307,3 +607,119 @@ No single strategy is a silver bullet. Use TTL Jitter to prevent mass simultaneo
 **5. Set aggressive lock timeouts:**
 If you use distributed locks, never let a lock live longer than twice the maximum expected database query time.
 
+## The Code You Can Use Today
+
+Here’s our production-tested cache stampede prevention service that you can adapt:
+
+```java
+@Service
+public class ProductionCacheService < K, V > {
+
+  private final RedisTemplate < String,
+  Object > redisTemplate;
+  private final ConcurrentHashMap < String,
+  CompletableFuture < V >> ongoingCalculations = new ConcurrentHashMap < > ();
+  private final Random random = new Random();
+  private final MeterRegistry meterRegistry;
+
+  public CompletableFuture < V > getOrCompute(K key,
+    Function < K, V > expensiveCalculation,
+    Duration baseTtl) {
+    String cacheKey = generateCacheKey(key);
+
+    // Check cache with TTL info
+    CacheEntry < V > entry = getCacheEntryWithTtl(cacheKey);
+
+    if (entry != null) {
+      // Consider probabilistic refresh
+      if (shouldRefreshEarly(entry, baseTtl)) {
+        triggerBackgroundRefresh(key, expensiveCalculation, baseTtl);
+      }
+      return CompletableFuture.completedFuture(entry.getValue());
+    }
+
+    // Cache miss - use request coalescing
+    return ongoingCalculations.computeIfAbsent(cacheKey, k -> {
+      return CompletableFuture.supplyAsync(() -> {
+        try {
+          // Double-check cache
+          CacheEntry < V > rechecked = getCacheEntryWithTtl(cacheKey);
+          if (rechecked != null) {
+            return rechecked.getValue();
+          }
+
+          // Perform expensive calculation
+          V result = expensiveCalculation.apply(key);
+
+          // Cache with jitter
+          cacheWithJitter(cacheKey, result, baseTtl);
+
+          return result;
+
+        } finally {
+          ongoingCalculations.remove(cacheKey);
+        }
+      });
+    });
+  }
+
+  private boolean shouldRefreshEarly(CacheEntry < V > entry, Duration baseTtl) {
+    long remainingTtl = entry.getRemainingTtlSeconds();
+
+    if (remainingTtl <= 0) return true;
+
+    double refreshProbability = 1.0 - ((double) remainingTtl / baseTtl.getSeconds());
+    return random.nextDouble() < refreshProbability;
+  }
+
+  private void cacheWithJitter(String key, V value, Duration baseTtl) {
+    double jitterFactor = 0.8 + (random.nextDouble() * 0.4);
+    Duration jitteredTtl = Duration.ofMillis((long)(baseTtl.toMillis() * jitterFactor));
+
+    redisTemplate.opsForValue().set(key, value, jitteredTtl);
+  }
+
+  // Usage example:
+  public CompletableFuture < PricingResult > getPricing(String productId, String customerId) {
+    PricingKey key = new PricingKey(productId, customerId);
+
+    return getOrCompute(key,
+      k -> performExpensiveCalculation(k.getProductId(), k.getCustomerId()),
+      Duration.ofMinutes(10));
+  }
+}
+```
+
+
+## 1. Cache Expiration Is a Distributed Systems Problem
+
+Simple TTL-based expiration doesn’t work at scale. You need:
+
+- Jittered expiration times
+- Probabilistic early refresh
+- Request coalescing for identical keys
+
+## 2. Monitor Cache Behaviour, Not Just Hit Rates
+
+Traditional cache monitoring focuses on hit rates. What matters more:
+
+- Concurrent calculations for the same key
+- Cache refresh patterns
+- Time-to-live distributions
+- Stampede detection and alerting
+
+## 3. Always Have a Fallback Strategy
+
+Your anti-stampede solution will fail eventually. Plan for:
+
+- Timeout-based fallbacks
+- Stale data serving during refresh
+- Graceful degradation when cache is unavailable
+
+## 4. Test Cache Invalidation Under Load
+
+We learned this the hard way: test cache expiration scenarios under realistic traffic patterns. Use chaos engineering to simulate:
+
+- Simultaneous cache expiration
+- Cache service outages
+- Database connection exhaustion

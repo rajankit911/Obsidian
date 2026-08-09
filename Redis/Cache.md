@@ -3,7 +3,10 @@
 > - [ ] CPU Cache
 > - [ ] Cache coherence
 > - [ ] Hardware vs software cache
+> - [ ] Cache Obsevability
 
+
+Read the article: https://medium.com/@samueltuoyo9082/redis-102-mastering-api-caching-strategies-ttl-expiration-cache-stampede-prevention-7fae97aa2dde
 # What is caching?
 
 Caching is a process that stores frequently accessed data in a high-speed data storage location so that they can be accessed faster for future requests.
@@ -398,3 +401,28 @@ Each policy has its trade-offs, so choosing the right eviction policy depends on
 
 <p>One of the primary reasons for priming the cache is to quickly speed up the system. The reason is simple: When actual requests arrive, there is a higher chance that the requested data is already in the cache. So in scenarios with heavy read traffic, this will reduce initial read latency and initial load on the database.</p>
 <p>The effectiveness of cache priming depends on understanding the data access patterns and choosing the right data to preload into the cache. Over-priming or preloading unnecessary data can lead to wasted cache space and reduced overall cache performance.</p>
+
+
+## Cache Invalidation
+
+Cache invalidation is basically the process of removing or updating cached data when the underlying source data changes.
+
+This is one of the hardest problems in caching system design because it requires balancing **performance, consistency, and system complexity**.
+
+In production backend systems that use Redis or similar caching layers, cache invalidation is usually triggered whenever a write operation modifies the primary data source.
+
+## There are three common cache invalidation approaches.
+
+The first approach is **write-based invalidation**. In this method, whenever data is updated in the database, the application immediately deletes or updates the corresponding cache entry. This ensures that future read requests will fetch fresh data rather than serving stale values.
+
+The second approach is **TTL-based invalidation**, where cache entries automatically expire after a predefined time. This method is simpler to implement because developers do not need to manually track every data mutation event. However, it may allow short periods of stale data depending on TTL configuration.
+
+The third approach is **event-driven invalidation**, which is commonly used in distributed architectures. In this design, cache updates are triggered by system events, message queues, or background workers when data changes occur.
+
+Choosing the right invalidation strategy depends on application requirements.
+
+If the system requires strong consistency, immediate invalidation after writes is usually preferred.
+
+If the system prioritizes performance and scalability over absolute freshness, TTL-based or hybrid approaches may be sufficient.
+
+In practice, many large-scale systems combine multiple invalidation techniques to achieve a balance between correctness and efficiency.
