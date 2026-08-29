@@ -126,7 +126,7 @@ From the above code, if we try to call `get()` from the `Future` instance, the o
 
 # Completable Future
 
-`CompletableFuture` is a class introduced in Java 8 that allows us to write asynchronous, non-blocking code. It implements the `Future` and `CompletionStage` interface. It represents a future result of an asynchronous computation. It can be thought of as a container that holds the result of an asynchronous operation that is being executed in a different thread.
+`CompletableFuture` is a class introduced in Java 8 that allows us to write asynchronous, non-blocking code. It implements the `Future` and `CompletionStage` interface. It represents a future result of an asynchronous computation (like `Future`) but with additional completion logic. It can be thought of as a container that holds the result of an asynchronous operation that is being executed in a different thread.
 
 `CompletableFuture` is a building block and a framework which provides a number of methods for composing, combining, and executing asynchronous computation steps and handling errors.
 
