@@ -94,35 +94,57 @@ The leaky bucket follows the FIFO (First In First Out) concept and can be implem
 
 
 ```java
-public class LeakyBucket {
-    private final long capacity;
-    private final long leakRate; // tokens per millisecond
-    private long water;
-    private long lastLeakTimestamp;
+import java.util.LinkedList;
+import java.util.Queue;
 
-    public LeakyBucket(long capacity, long leakRate) {
+public class LeakyBucket {
+
+    private final int capacity;
+    private final int leakRate; // requests per second
+
+    private final Queue<String> queue = new LinkedList<>();
+
+    public LeakyBucket(int capacity, int leakRate) {
         this.capacity = capacity;
         this.leakRate = leakRate;
-        this.water = 0;
-        this.lastLeakTimestamp = System.currentTimeMillis();
     }
 
-    public synchronized boolean allowRequest() {
-        leak();
-        if (water < capacity) {
-            water++;
-            return true;
+    // Add incoming requests to the bucket
+    public void addRequests(int count) {
+
+        if (queue.size() + count > capacity) {
+            System.out.println("Bucket overflow! Requests rejected.");
+            return;
         }
-        return false;
+
+        for (int i = 0; i < count; i++) {
+            queue.offer("request");
+        }
     }
 
-    private void leak() {
-        long now = System.currentTimeMillis();
-        long elapsed = now - lastLeakTimestamp;
-        long leaked = elapsed * leakRate;
-        if (leaked > 0) {
-            water = Math.max(0, water - leaked);
-            lastLeakTimestamp = now;
+    // Leak requests at a fixed rate
+    public void leak() {
+
+        int requestsToProcess = Math.min(leakRate, queue.size());
+        for (int i = 0; i < requestsToProcess; i++) {
+            queue.poll();
+        }
+        
+        System.out.println(
+            "Queue: " + queue.size() + ", Output: " + requestsToProcess
+        );
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        LeakyBucket bucket = new LeakyBucket(500, 100);
+        // 500 requests arrive at once
+        bucket.addRequests(500);
+        // Process every second
+        for (int second = 0; second <= 5; second++) {
+            System.out.println("Time: " + second + " sec");
+            bucket.leak();
+            Thread.sleep(1000);
         }
     }
 }
@@ -153,15 +175,9 @@ Time is divided into fixed-size windows; counts requests per window.
     - Else, we discard the request.
         
 
-> [
-> 
-> ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fc9c78561-ad73-43ee-b267-98c72f9ead57_711x238.png)
-> 
-> 
-> 
-> ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fc9c78561-ad73-43ee-b267-98c72f9ead57_711x238.png)
-> 
-> As with token, the biggest drawback of the fixed window algorithm is the following:
+![[fixed_window_counter.svg]]
+
+As with token, the biggest drawback of the fixed window algorithm is the following:
 
 - It will potentially lead to a sudden burst of traffic near the boundary of the window.
     
@@ -220,8 +236,7 @@ public class FixedWindowCounter {
         int requestCount;
 
         Window(long startTime, int requestCount) {
-            this.startTime = start
-::contentReference[oaicite:0]{index=0}
+            this.startTime = start::contentReference[oaicite:0]{index=0}
             this.startTime = startTime;
             this.requestCount = requestCount;
         }
